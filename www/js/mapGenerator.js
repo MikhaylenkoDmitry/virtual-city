@@ -72,10 +72,10 @@ this.diamondSquare = function() {
 
 function generateMap() {
 
-    camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
-    camera.position.z = 1000;
+    //camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
+    //camera.position.z = 1000;
 
-    scene = new THREE.Scene();
+    //scene = new THREE.Scene();
 
     material = new THREE.MeshBasicMaterial( { color: 0x003300, wireframe: true } );
 
@@ -103,8 +103,11 @@ function generateMap() {
         }
     }
 
+    //this.geometry.rotation.x = 3.1415/2;
+
 
     mesh = new THREE.Mesh( geometry, material );
+    mesh.rotation.x = 3.1415/2;
     return mesh;
 }
 
