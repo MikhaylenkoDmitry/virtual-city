@@ -2,6 +2,7 @@
 <body>
 <script src="js/three.min.js"></script>
 <script src="js/geometryHelper.js"></script>
+<script src="js/basicBuildingGenerator.js"></script>
 <script>
 
     var camera, scene, renderer;
@@ -17,7 +18,7 @@
 
         scene = new THREE.Scene();
 
-        mesh = generateCubeMesh(200, 200, 200);
+        mesh = generateBarnMesh(200, 200, 200, 0.5, 0.8);
         scene.add( mesh );
 
         renderer = new THREE.WebGLRenderer();

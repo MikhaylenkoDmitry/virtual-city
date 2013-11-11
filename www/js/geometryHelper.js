@@ -8,6 +8,11 @@ function addRectangleFace(geometry, pointsOffset, a, b, c, d)
     geometry.faces.push(new THREE.Face3(pointsOffset + c, pointsOffset + d, pointsOffset + a));
 }
 
+function addTriangleFace(geometry, pointsOffset, a, b, c)
+{
+    geometry.faces.push(new THREE.Face3(pointsOffset + a, pointsOffset + b, pointsOffset + c));
+}
+
 function addCube(geometry, x, y, z, width, height, depth)
 {
     var pointsOffset = geometry.vertices.length;
@@ -31,12 +36,21 @@ function addCube(geometry, x, y, z, width, height, depth)
     addRectangleFace(geometry, pointsOffset, 7, 4, 0, 3);
 }
 
-function generateCubeMesh(width, height, depth)
+function addTriangularPrism(geometry, x, y, z, width, height, depth)
 {
-    var geometry = new THREE.Geometry();
-    var material = new THREE.MeshBasicMaterial( { color: 0xff0000, wireframe: true } );
+    var pointsOffset = geometry.vertices.length;
 
-    addCube(geometry, width, height, depth);
+    // Vertices
+    geometry.vertices.push(new THREE.Vector3(x, y, z));
+    geometry.vertices.push(new THREE.Vector3(x + width, y, z));
+    geometry.vertices.push(new THREE.Vector3(x + width/2, y + height, z));
+    geometry.vertices.push(new THREE.Vector3(x, y, z + depth));
+    geometry.vertices.push(new THREE.Vector3(x + width, y, z + depth));
+    geometry.vertices.push(new THREE.Vector3(x + width/2, y + height, z + depth));
 
-    return  new THREE.Mesh( geometry, material );
+    // Faces
+    addTriangleFace(geometry, pointsOffset, 2, 1, 0);
+    addTriangleFace(geometry, pointsOffset, 5, 3, 4);
+    addRectangleFace(geometry, pointsOffset, 2, 5, 4, 1);
+    addRectangleFace(geometry, pointsOffset, 2, 0, 3, 5);
 }
