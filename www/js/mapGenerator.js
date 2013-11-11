@@ -16,7 +16,7 @@ this.diamondSquare = function() {
         for(var i = 0; i <= this.segments; i++) {
             this.terrain[i] = new Array();
             for(var j = 0; j <= this.segments; j++) {
-                this.terrain[i][j] = getRandomInt(3,17);
+                this.terrain[i][j] = getRandomInt(-30,170);
             }
         }
 
@@ -46,7 +46,7 @@ this.diamondSquare = function() {
 			for(var x = 0; x < this.segments; x += half) {
 				for(var y = (x+half)%length; y < this.segments; y += length) {
 					var average = this.terrain[(x-half+size)%size][y]+ // middle left
-							this.terrain[(x+half)%size][y]+ // middle right
+							this.terrain[(x+half-10)%size+10][y]+ // middle right
 							this.terrain[x][(y+half)%size]+ // middle top
 							this.terrain[x][(y-half+size)%size]; // middle bottom
 					average /= 4;
@@ -91,13 +91,7 @@ function generateMap() {
     var index = 0;
     for(var i = 0; i < this.segments; i++) {
         for(var j = 0; j < this.segments; j++) {
-                //try{
-                //alert(typeof(terrain));
-
-                this.geometry.vertices[index].setZ(this.terrain[i][j]);
-                //}catch(e){
-                //    alert(index);
-                //}
+                this.geometry.vertices[i*this.segments + j].setZ(this.terrain[i][j]);
                 index++;
 
         }
@@ -105,7 +99,40 @@ function generateMap() {
 
 
     mesh = new THREE.Mesh( geometry, material );
+    mesh = generateRiver(mesh);
+    mesh.rotation.x = -1.5;
     return mesh;
 }
 
 
+
+
+
+function generateRiver(  map_mesh){
+
+
+    river_canvas =  document.createElement("canvas");
+
+    river_canvas.width = this.segments;
+    river_canvas.height = this.segments;
+    canvas = river_canvas.getContext("2d");
+    canvas.strokeStyle = "red";
+    canvas.lineWidth=10;
+    canvas.beginPath();
+    canvas.moveTo(20,20);
+    canvas.bezierCurveTo(10,getRandomInt(100,200),getRandomInt(100,this.segments),
+        getRandomInt(20,this.segments),this.segments,this.segments);
+    canvas.stroke();
+
+    map_mesh.geometry.dynamic = true;
+    for (var x = 0; x< this.segments; x++){
+        for (var y = 0; y< this.segments; y++){
+            if (canvas.getImageData(x, y, 1, 1).data[0]>0) {
+                alert("asdf");
+                map_mesh.geometry.vertices[x*this.segments+y].setZ(-100);
+            }
+        }
+    }
+  map_mesh.geometry.verticesNeedUpdate = true;
+  return map_mesh;
+}
