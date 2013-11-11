@@ -72,9 +72,6 @@ this.diamondSquare = function() {
 
 function generateMap() {
 
-    //camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
-    //camera.position.z = 1000;
-
     //scene = new THREE.Scene();
 
     material = new THREE.MeshBasicMaterial( { color: 0x003300, wireframe: true  } );
@@ -87,7 +84,6 @@ function generateMap() {
         this.segments,
         this.segments
     );
-    //alert("asdf"+this.geometry.vertices);
     var index = 0;
     for(var i = 0; i < this.segments; i++) {
         for(var j = 0; j < this.segments; j++) {
@@ -97,12 +93,9 @@ function generateMap() {
         }
     }
 
-    //this.geometry.rotation.x = 3.1415/2;
-
-
     mesh = new THREE.Mesh( geometry, material );
     mesh = generateRiver(mesh);
-    mesh.rotation.x = -3.1415/2;
+    mesh.rotation.x -= 3.1415/2;
     return mesh;
 }
 
@@ -130,8 +123,7 @@ function generateRiver(  map_mesh){
     for (var x = 0; x< this.segments; x++){
         for (var y = 0; y< this.segments; y++){
             if (canvas.getImageData(x, y, 1, 1).data[0]>0) {
-                alert("asdf");
-                map_mesh.geometry.vertices[x*this.segments+y].setZ(-100);
+                map_mesh.geometry.vertices[x*this.segments+y].setZ(-40);
             }
         }
     }
