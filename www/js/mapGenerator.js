@@ -129,7 +129,7 @@ function generateRiver(  map_mesh){
   for (var i=0; i < map_mesh.geometry.vertices.length; i++) {
       if (canvas.getImageData( map_mesh.geometry.vertices[i].x+this.width/2, map_mesh.geometry.vertices[i].y+this.height/2, 1,1).data[0]>0 )
            map_mesh.geometry.vertices[i].setZ(-100);
-
+   }
   map_mesh.geometry.verticesNeedUpdate = true;
   return map_mesh;
 }
