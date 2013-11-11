@@ -4,11 +4,11 @@
 <script src="js/geometryHelper.js"></script>
 <script src="js/basicBuildingGenerator.js"></script>
 <script src="js/mapGenerator.js"></script>
-<script src="js/riverGenerator.js"></script>
+<script src="js/FirstPersonControls.js"></script>
 <script>
 
     var camera, scene, renderer;
-    var mesh;
+    var lastTime = 0, control;
 
     init();
     animate();
@@ -16,12 +16,20 @@
     function init() {
 
         camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
-        camera.position.z = 1000;
+        camera.position.x = -100;
+        camera.position.y = 50;
+        camera.position.z = 20;
+
+		controls = new THREE.FirstPersonControls( camera );
+		controls.movementSpeed = 100;
+		controls.lookSpeed = 0.05;
+		controls.lookVertical = true;
 
         scene = new THREE.Scene();
         map_mesh = generateMap();
         scene.add(map_mesh);
-        mesh = generateBarnMesh(200, 200, 200, 0.5, 0.8);
+        var mesh = generateBarnMesh(20, 20, 20, 0.5, 0.8);
+        mesh.position.y += 10;
         scene.add( mesh );
         for(i in scene.children){
             scene.children[i].rotation.x += 0.5;
@@ -35,16 +43,13 @@
     }
 
     function animate() {
-
-        // note: three.js includes requestAnimationFrame shim
         requestAnimationFrame( animate );
-        //for(i in scene.children){
-        //    scene.children[i].rotation.x += 0.01;
-        //    scene.children[i].rotation.y += 0.01;
-        //}
+		var time = performance.now() / 1000;
 
-        renderer.render( scene, camera );
+		controls.update( time - lastTime );
+		renderer.render( scene, camera );
 
+		lastTime = time;
     }
 
 </script>
