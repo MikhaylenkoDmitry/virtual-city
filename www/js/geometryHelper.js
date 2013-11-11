@@ -53,4 +53,18 @@ function addTriangularPrism(geometry, x, y, z, width, height, depth)
     addTriangleFace(geometry, pointsOffset, 5, 3, 4);
     addRectangleFace(geometry, pointsOffset, 2, 5, 4, 1);
     addRectangleFace(geometry, pointsOffset, 2, 0, 3, 5);
+    addRectangleFace(geometry, pointsOffset, 0, 1, 4, 3);
+}
+
+function rotateObject(object, angle)
+{
+    var rotObjectMatrix = new THREE.Matrix4().makeRotationAxis((new THREE.Vector3(0, 1, 0)).normalize(), angle);
+
+    object.geometry.applyMatrix(rotObjectMatrix);
+}
+
+function moveObject(object, x, y, z)
+{
+    var transMatrix = new THREE.Matrix4().makeTranslation(x, y, z);
+    object.geometry.applyMatrix(transMatrix);
 }
