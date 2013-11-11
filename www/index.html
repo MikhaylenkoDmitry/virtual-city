@@ -4,6 +4,7 @@
 <script src="js/geometryHelper.js"></script>
 <script src="js/basicBuildingGenerator.js"></script>
 <script src="js/mapGenerator.js"></script>
+<script src="js/riverGenerator.js"></script>
 <script>
 
     var camera, scene, renderer;
@@ -22,7 +23,10 @@
         scene.add(map_mesh);
         mesh = generateBarnMesh(200, 200, 200, 0.5, 0.8);
         scene.add( mesh );
-
+        for(i in scene.children){
+            scene.children[i].rotation.x += 0.5;
+            scene.children[i].rotation.y += 0.5;
+        }
         renderer = new THREE.WebGLRenderer();
         renderer.setSize( window.innerWidth, window.innerHeight );
 
@@ -34,7 +38,10 @@
 
         // note: three.js includes requestAnimationFrame shim
         requestAnimationFrame( animate );
-
+        //for(i in scene.children){
+        //    scene.children[i].rotation.x += 0.01;
+        //    scene.children[i].rotation.y += 0.01;
+        //}
 
         renderer.render( scene, camera );
 
