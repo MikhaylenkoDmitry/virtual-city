@@ -3,12 +3,18 @@
 this.width = 1000;
 this.height = 1000;
 this.segments = 128;
-this.smoothingFactor  = 64;
+this.smoothingFactor  = 100;
 
 function getRandomInt(min, max)
 {
+    if (!max){
+        max = min;
+        min = 0;
+    }
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
+
 
 this.diamondSquare = function() {
         this.terrain = new Array();
@@ -16,7 +22,7 @@ this.diamondSquare = function() {
         for(var i = 0; i <= this.segments; i++) {
             this.terrain[i] = new Array();
             for(var j = 0; j <= this.segments; j++) {
-                this.terrain[i][j] = getRandomInt(-30,170);
+                this.terrain[i][j] = 0;//getRandomInt(-30,170);
             }
         }
 
@@ -91,9 +97,8 @@ function generateMap() {
     var index = 0;
     for(var i = 0; i < this.segments; i++) {
         for(var j = 0; j < this.segments; j++) {
-                this.geometry.vertices[i*this.segments + j].setZ(this.terrain[i][j]);
+                this.geometry.vertices[j*this.segments + i].setZ(this.terrain[i][j]);
                 index++;
-
         }
     }
 
@@ -115,26 +120,23 @@ function generateRiver(  map_mesh){
 
     river_canvas =  document.createElement("canvas");
 
-    river_canvas.width = this.segments;
-    river_canvas.height = this.segments;
+    river_canvas.width = this.width;
+    river_canvas.height = this.height;
     canvas = river_canvas.getContext("2d");
     canvas.strokeStyle = "red";
-    canvas.lineWidth=10;
+    canvas.lineWidth=this.width/10|0;
     canvas.beginPath();
-    canvas.moveTo(20,20);
-    canvas.bezierCurveTo(10,getRandomInt(100,200),getRandomInt(100,this.segments),
-        getRandomInt(20,this.segments),this.segments,this.segments);
+    canvas.moveTo(0,0);
+    canvas.bezierCurveTo(getRandomInt(100,2000),getRandomInt(100,200),getRandomInt(100,200),
+        getRandomInt(100,2000),this.width,this.height);
+    //canvas.lineTo(this.width+50,this.height+50);
     canvas.stroke();
 
     map_mesh.geometry.dynamic = true;
-    for (var x = 0; x< this.segments; x++){
-        for (var y = 0; y< this.segments; y++){
-            if (canvas.getImageData(x, y, 1, 1).data[0]>0) {
-                alert("asdf");
-                map_mesh.geometry.vertices[x*this.segments+y].setZ(-100);
-            }
-        }
-    }
+  for (var i=0; i < map_mesh.geometry.vertices.length; i++) {
+      if (canvas.getImageData( map_mesh.geometry.vertices[i].x+this.width/2, map_mesh.geometry.vertices[i].y+this.height/2, 1,1).data[0]>0 )
+           map_mesh.geometry.vertices[i].setZ(-100);
+   }
   map_mesh.geometry.verticesNeedUpdate = true;
   return map_mesh;
 }
