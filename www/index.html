@@ -3,6 +3,7 @@
 <script src="js/three.min.js"></script>
 <script src="js/geometryHelper.js"></script>
 <script src="js/basicBuildingGenerator.js"></script>
+<script src="js/mapGenerator.js"></script>
 <script>
 
     var camera, scene, renderer;
@@ -17,7 +18,8 @@
         camera.position.z = 1000;
 
         scene = new THREE.Scene();
-
+        map_mesh = generateMap();
+        scene.add(map_mesh);
         mesh = generateBarnMesh(200, 200, 200, 0.5, 0.8);
         scene.add( mesh );
 
@@ -33,8 +35,6 @@
         // note: three.js includes requestAnimationFrame shim
         requestAnimationFrame( animate );
 
-        mesh.rotation.x += 0.01;
-        mesh.rotation.y += 0.02;
 
         renderer.render( scene, camera );
 
