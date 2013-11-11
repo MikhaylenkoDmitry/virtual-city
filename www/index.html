@@ -24,12 +24,13 @@
 		controls = new THREE.FirstPersonControls( camera );
 		controls.movementSpeed = 100;
 		controls.lookSpeed = 0.05;
-		controls.lookVertical = false;
+		controls.lookVertical = true;
 
         scene = new THREE.Scene();
         map_mesh = generateMap();
         scene.add(map_mesh);
         var mesh = generateBarnMesh(20, 20, 20, 0.5, 0.8);
+        mesh.position.y += 10;
         scene.add( mesh );
 
         renderer = new THREE.WebGLRenderer();

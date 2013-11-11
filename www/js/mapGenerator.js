@@ -77,7 +77,7 @@ function generateMap() {
 
     //scene = new THREE.Scene();
 
-    material = new THREE.MeshBasicMaterial( { color: 0x003300, wireframe: true } );
+    material = new THREE.MeshBasicMaterial( { color: 0x003300, wireframe: true  } );
 
     this.terrain = diamondSquare();
 
@@ -107,7 +107,7 @@ function generateMap() {
 
 
     mesh = new THREE.Mesh( geometry, material );
-    mesh.rotation.x = 3.1415/2;
+    mesh.rotation.x = -3.1415/2;
     return mesh;
 }
 
