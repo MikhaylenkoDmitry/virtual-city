@@ -48,7 +48,7 @@ function getSubBuildingLevel()
 
 function getHouseHeight(subBuildingLevel)
 {
-    return getRandomInt(200/(subBuildingLevel + 1), 500/(subBuildingLevel + 1));
+    return getRandomInt(10/(subBuildingLevel + 1), 25/(subBuildingLevel + 1));
 }
 
 function getHouseRoofRatio()
