@@ -14,7 +14,7 @@
     var lastTime = 0, control;
     var testtexture1;
 
-    var textureNames = [['grass', 'grass.jpg'], ['testtexture1','testtexture1.png'], ['sky_box', 'sky_box.jpg'], ['water','water1.jpg'], ['chimney', 'houseChimney.jpg'], ['houseBasement', 'houseBasement.jpg'], ['houseFloor', 'houseFloor1.jpg'], ['wall1','wall1.jpg'],['wall2','wall2.jpg']];
+    var textureNames = [['grass', 'grass.jpg'], ['testtexture1','testtexture1.png'], ['sky_box', 'sky_box.jpg'], ['water','water1.jpg'], ['chimney', 'houseChimney.jpg'], ['houseBasement', 'houseBasement.jpg'], ['houseFloor1', 'houseFloor1.jpg'], ['houseFloor2', 'houseFloor2.jpg'], ['wall1','wall1.jpg'],['wall2','wall2.jpg']];
 
 	var materialFactory = {};
 
@@ -75,8 +75,8 @@
         scene.add(map_meshes[0]);
         scene.add(map_meshes[1]);
         placeStuff(scene);
-        generateBuilding(scene, 200, 0, 0, 200, 200, Math.PI / 3);
-        generateCommonWall(scene, 0, 0, 20, 100, 20, 100);
+        //generateBuilding(scene, 200, 0, 0, 200, 200, Math.PI / 3);
+        //generateCommonWall(scene, 0, 0, 20, 100, 20, 100);
     }
 
     function animate() {
