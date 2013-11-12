@@ -12,6 +12,17 @@
 
     var camera, scene, renderer;
     var lastTime = 0, control;
+    var testtexture1;
+
+    var materialFactory = {};
+    materialFactory.getMaterialByName = function(name){
+    	if(name == 'grass'){
+    		return this.grassmaterial;
+    	} else {
+    		return this.testmaterial1;
+    	}
+    }
+
 
     init();
     animate();
@@ -29,17 +40,31 @@
 		controls.lookVertical = true;
 
         scene = new THREE.Scene();
-        map_mesh = generateMap();
-        scene.add(map_mesh);
 
-        generateBuilding(scene, 200, 0, 0, 200, 200, Math.PI / 3);
-        generateCommonWall(scene,0, 50, 50, 10, 100);
+		grasstexture = THREE.ImageUtils.loadTexture('images/textures/grass.jpg', {}, function() {
+			materialFactory.grassmaterial = new THREE.MeshBasicMaterial({map: grasstexture});
+		    loadtexture2();
+		});
 
         renderer = new THREE.WebGLRenderer();
         renderer.setSize( window.innerWidth, window.innerHeight );
 
         document.body.appendChild( renderer.domElement );
+    }
 
+    function loadtexture2(){
+		testtexture1 = THREE.ImageUtils.loadTexture('images/textures/testtexture1.png', {}, function() {
+			materialFactory.testmaterial1 = new THREE.MeshBasicMaterial({map: testtexture1});
+		    initscene();
+		});
+    }
+
+    function initscene(){
+        map_mesh = generateMap();
+        scene.add(map_mesh);
+
+        generateBuilding(scene, 200, 0, 0, 200, 200, Math.PI / 3);
+        generateCommonWall(scene,0, 50, 50, 10, 100);
     }
 
     function animate() {
