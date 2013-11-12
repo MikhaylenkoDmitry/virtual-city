@@ -4,6 +4,7 @@ this.width = 1000;
 this.height = 1000;
 this.segments = 128;
 this.smoothingFactor  = 100;
+this.river_canvas;
 
 function getRandomInt(min, max)
 {
@@ -80,7 +81,6 @@ function generateMap() {
 
     //scene = new THREE.Scene();
 
-    material = new THREE.MeshBasicMaterial( { color: 0x003300, wireframe: true  } );
 
     this.terrain = diamondSquare();
 
@@ -98,6 +98,11 @@ function generateMap() {
         }
     }
 
+    this.texture = 'images/textures/grass.jpg';
+    //material = new THREE.MeshBasicMaterial( { color: 0x003300, wireframe: true  } );
+    this.material = this.material = new THREE.MeshBasicMaterial({
+        map: THREE.ImageUtils.loadTexture(this.texture)
+    });
     mesh = new THREE.Mesh( geometry, material );
     mesh = generateRiver(mesh);
     mesh.rotation.x -= 3.1415/2;
@@ -111,11 +116,11 @@ function generateMap() {
 function generateRiver(  map_mesh){
 
 
-    river_canvas =  document.createElement("canvas");
+    this.river_canvas =  document.createElement("canvas");
+    this.river_canvas.width = this.width;
+    this.river_canvas.height = this.height;
+    canvas = this.river_canvas.getContext("2d");
 
-    river_canvas.width = this.width;
-    river_canvas.height = this.height;
-    canvas = river_canvas.getContext("2d");
     canvas.strokeStyle = "red";
     canvas.lineWidth=this.width/10|0;
     canvas.beginPath();
