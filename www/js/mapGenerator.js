@@ -1,5 +1,5 @@
 
-
+this.BUILDINGS_COUNT = 50;
 this.width = 1000;
 this.height = 1000;
 this.segments = 128;
@@ -107,7 +107,7 @@ function generateMap() {
     mesh = new THREE.Mesh( geometry, materialFactory.getMaterialByName('grass') );
     mesh_and_river = generateRiver(mesh);
     mesh_and_river[0].rotation.x -= 3.1415/2;
-    mesh_and_river[1] = new THREE.Mesh( mesh_and_river[1], materialFactory.getMaterialByName('grass'));
+    mesh_and_river[1] = new THREE.Mesh( mesh_and_river[1], materialFactory.getMaterialByName('water'));
     mesh_and_river[1].rotation.x -= 3.1415/2;
     return mesh_and_river;
 }
@@ -129,10 +129,10 @@ function generateRiver(  map_mesh){
 
     canvas = this.river_canvas.getContext("2d");
     canvas.strokeStyle = "red";
-    canvas.lineWidth=this.width/10|0;
+    canvas.lineWidth=this.width/10|0; //ширина реки
     canvas.beginPath();
     canvas.moveTo(0,0);
-    canvas.bezierCurveTo(getRandomInt(100,1000),getRandomInt(100,200),getRandomInt(100,200),
+    canvas.bezierCurveTo(getRandomInt(100,1000),getRandomInt(100,1000),getRandomInt(100,1000),
         getRandomInt(100,1000),this.width,this.height);
     canvas.stroke();
 
@@ -150,22 +150,35 @@ function generateRiver(  map_mesh){
         i_x = (map_mesh.geometry.faces[i].centroid.x + this.width/2)|0  ;
         i_y = (map_mesh.geometry.faces[i].centroid.y + this.width/2)|0  ;
         index = (i_x + i_y * canvasImageData.width) * 4;
-        if (canvasImageData.data[index] > 0 )        {
-            geom.faces.push(map_mesh.geometry.faces[i]);
-            geom.faceVertexUvs[0].push( [
-            new THREE.Vector2(0,1),
-            new THREE.Vector2(1,1),
-            new THREE.Vector2(1,0)
-            ] );
-            index_a = vertex_index2image_index(map_mesh.geometry.faces[i].a, map_mesh, canvasImageData.width);
-            index_b = vertex_index2image_index(map_mesh.geometry.faces[i].b, map_mesh, canvasImageData.width);
-            index_c = vertex_index2image_index(map_mesh.geometry.faces[i].c, map_mesh, canvasImageData.width);
 
-            if (canvasImageData.data[index_a] > 0 && canvasImageData.data[index_b] > 0&& canvasImageData.data[index_c] > 0)
-                map_mesh.geometry.vertices[map_mesh.geometry.faces[i].b].setZ(-1);
-            //map_mesh.geometry.vertices[map_mesh.geometry.faces[i].b].setZ(-200);
-            //map_mesh.geometry.vertices[map_mesh.geometry.faces[i].c].setZ(-200);
+        index_a = vertex_index2image_index(map_mesh.geometry.faces[i].a, map_mesh, canvasImageData.width);
+        index_b = vertex_index2image_index(map_mesh.geometry.faces[i].b, map_mesh, canvasImageData.width);
+        index_c = vertex_index2image_index(map_mesh.geometry.faces[i].c, map_mesh, canvasImageData.width);
+
+        //if (canvasImageData.data[index] > 0 )        {
+         //   geom.faces.push(map_mesh.geometry.faces[i]);
+         //   geom.faceVertexUvs[0].push( [
+         //   new THREE.Vector2(0,1),
+         //   new THREE.Vector2(1,1),
+         //   new THREE.Vector2(1,0)
+         //   ] );
+        if (canvasImageData.data[index_a] > 0 && canvasImageData.data[index_b] > 0 && canvasImageData.data[index_c] > 0){
+                map_mesh.geometry.vertices[map_mesh.geometry.faces[i].c].setZ(-200);
+        } //else {
+            if (map_mesh.geometry.vertices[map_mesh.geometry.faces[i].a].z<-10 ||
+                map_mesh.geometry.vertices[map_mesh.geometry.faces[i].b].z<-10 ||
+                map_mesh.geometry.vertices[map_mesh.geometry.faces[i].c].z<-10 ||
+                canvasImageData.data[index_a] > 0 || canvasImageData.data[index_b] > 0 || canvasImageData.data[index_c] > 0){
+            //if (canvasImageData.data[index_a] > 0 || canvasImageData.data[index_b] > 0 || canvasImageData.data[index_c] > 0)
+                geom.faces.push(map_mesh.geometry.faces[i]);
+                geom.faceVertexUvs[0].push( [
+                    new THREE.Vector2(0,1),
+                    new THREE.Vector2(1,1),
+                    new THREE.Vector2(1,0)
+                ] );
             }
+            //map_mesh.geometry.vertices[map_mesh.geometry.faces[i].b].setZ(-200);
+        //}
 
     }
 
@@ -179,4 +192,37 @@ function generateRiver(  map_mesh){
     map_mesh.geometry.verticesNeedUpdate = true;
     return [map_mesh, geom];
 
+}
+
+function placeStuff(scene){
+    canvas = this.river_canvas.getContext("2d");
+    canvasImageData = canvas.getImageData(0, 0, this.width, this.height);
+
+    for (var i = 0; i< this.BUILDINGS_COUNT; i++ ){
+        var x = getRandomInt(0,this.width)-this.width/2;
+        var y = getRandomInt(0,this.height) - this.height/2;
+        var index = (x + y * canvasImageData.width) * 4;
+
+        if (canvasImageData.data[index]>0){
+            i-=0;
+            continue;
+        }  else{
+        generateBuilding(scene, y, 0,x , 10, 10, Math.random()*Math.PI);
+        }
+
+    }
+    var x= -this.width/2;
+    var y = -this.width/2;
+    for (; x < this.width/2; x += 20){
+        generateCommonWall(scene, x, y, x+20, y, 20, 100);
+    }
+    for (; y < this.width/2; y += 20){
+        generateCommonWall(scene, x, y, x+20, y, 10, 100);
+    }
+    for (; x > -this.width/2; x -= 20){
+            generateCommonWall(scene, x, y, x+20, y, 10, 100);
+    }
+    for (; y >- this.width/2; y -= 20){
+            generateCommonWall(scene, x, y, x+20, y, 10, 100);
+        }
 }

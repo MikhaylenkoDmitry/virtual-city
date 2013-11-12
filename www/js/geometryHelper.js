@@ -124,9 +124,9 @@ function addTriangularWallRightLedge(geometry, x, y, z, width, height, depth)
     // Faces
     addTriangleFace(geometry, pointsOffset, 2, 1, 0);
     addTriangleFace(geometry, pointsOffset, 5, 3, 4);
-    addRectangleFace(geometry, pointsOffset, 2, 5, 4, 1);
-    addRectangleFace(geometry, pointsOffset, 2, 0, 3, 5);
-    addRectangleFace(geometry, pointsOffset, 0, 1, 4, 3);
+    //addRectangleFace(geometry, pointsOffset, 2, 5, 4, 1);
+    //addRectangleFace(geometry, pointsOffset, 2, 0, 3, 5);
+    //addRectangleFace(geometry, pointsOffset, 0, 1, 4, 3);
 }
 
 function addWall(geometry, x ,y, z, width, height, depth)
