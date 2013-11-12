@@ -14,12 +14,29 @@
     var lastTime = 0, control;
     var testtexture1;
 
-    var materialFactory = {};
+    var textureNames = [['grass', 'grass.jpg'], ['testtexture1','testtexture1.png']];
+
+	var materialFactory = {};
+
+	materialFactory.loadTextures = function(){
+		this.textures = [];
+		for(i=0; i<textureNames.length; i++){
+			this.textures.push( THREE.ImageUtils.loadTexture('images/textures/grass.jpg') );
+		}
+
+		this.materials = [];
+		for(i=0; i<textureNames.length; i++){
+			this.materials[i] = new THREE.MeshBasicMaterial({map: this.textures[i]});
+		}
+
+		initscene();
+	}
+
     materialFactory.getMaterialByName = function(name){
-    	if(name == 'grass'){
-    		return this.grassmaterial;
-    	} else {
-    		return this.testmaterial1;
+    	for(i=0; i<textureNames.length; i++){
+    		if( name == textureNames[i][0] ){
+    			return this.materials[i];
+    		}
     	}
     }
 
@@ -41,22 +58,12 @@
 
         scene = new THREE.Scene();
 
-		grasstexture = THREE.ImageUtils.loadTexture('images/textures/grass.jpg', {}, function() {
-			materialFactory.grassmaterial = new THREE.MeshBasicMaterial({map: grasstexture});
-		    loadtexture2();
-		});
-
         renderer = new THREE.WebGLRenderer();
         renderer.setSize( window.innerWidth, window.innerHeight );
 
         document.body.appendChild( renderer.domElement );
-    }
 
-    function loadtexture2(){
-		testtexture1 = THREE.ImageUtils.loadTexture('images/textures/testtexture1.png', {}, function() {
-			materialFactory.testmaterial1 = new THREE.MeshBasicMaterial({map: testtexture1});
-		    initscene();
-		});
+        materialFactory.loadTextures();
     }
 
     function initscene(){
