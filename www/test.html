@@ -10,9 +10,9 @@
 
 
         // light blue
-        grd.addColorStop(0, "rgba(0, 0, 255, 0.01)");
+        grd.addColorStop(0, "rgba(0, 0, 255, 1.0)");
         // dark blue
-        grd.addColorStop(1, "rgba(0, 0, 0, 0.01)");
+        grd.addColorStop(1, "rgba(0, 0, 0, 1.0)");
         context.fillStyle = grd;
         context.beginPath();
         context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
@@ -29,33 +29,67 @@
 
     var context = canvas.getContext('2d');
     context.strokeStyle = "red";
-    context.lineWidth=this.width/10|0; //ширина реки
-
-
+    context.lineWidth=10; //ширина реки
     context.beginPath();
     context.moveTo(0,0);
-    this.river_canvas = 0;
-    this.width = 1000;
-    this.river_canvas.x_0 = 0;
-    this.river_canvas.y_0 = 0;
-    this.river_canvas.x_1 = getRandomInt(100,this.width);
-    this.river_canvas.y_1 = getRandomInt(100,this.width);
-    this.river_canvas.x_2 = getRandomInt(100,this.width);
-    this.river_canvas.y_2 = getRandomInt(100,this.width);
-    this.river_canvas.x_3 = this.width;
-    this.river_canvas.y_3 = this.width;
+    x_0 = 0;
+    y_0 = 0;
+    x_1 = getRandomInt(100,1000);
+    y_1 = getRandomInt(100,1000);
+    x_2 = getRandomInt(100,1000);
+    y_2 = getRandomInt(100,1000);
+    x_3 = 1000;
+    y_3 = 1000;
 
-    context.bezierCurveTo(   this.river_canvas.x_1,this.river_canvas.y_1,
-    this.river_canvas.x_2,this.river_canvas.y_2,
-    this.river_canvas.x_3,this.river_canvas.y_3);
+    context.bezierCurveTo(  x_1, y_1, x_2, y_2, x_3, y_3);
     context.stroke();
-    var hill_cnt = getRandomInt(3,8);//+3000;
-    for (var i = 0 ; i < hill_cnt ; i++){
-        var x = getRandomInt(0,100);
-        var y = getRandomInt(0,100);
-        var r = getRandomInt(10,20);
-        addHill(context, x,y,r);
+    var r = 500;
+    var img_data = context.getImageData(0, 0, 1000, 1000);
+    var powers = new Array();
+    for (var x = 0; x < 1000; x ++){
+        powers[x] = new Array();
+        for (var y = 0; y<1000; y++){
+            powers[x][y] = 0;
+        }
     }
+    function increase(powers, x, y, r){
+        var i = x - r/2;
+        if (i<0) i =0;
+        for ( ; i < x+r/2 && i < 1000; i++){
+            var j = y -r/2;
+            if (j<0) j=0;
+            for (; j < y + r/2 && j < 1000; j++){
+                if (Math.abs(x-i)+Math.abs(y-j) < r)
+                    powers[i][j]+=1;
+            }
+        }
+    }
+    for (var x = 0; x < 1000; x +=10){
+        for (var y = 0; y<1000; y+=10){
+            if (img_data.data[(x+1000*y)*4]>0){
+                //addHill(context, x,y,r);
+                increase(powers,x,y,r);
+            }
+        }
+    }
+    var max_x = 0;
+    var max_y = 0;
+    for (var x = 0; x < 1000; x +=1){
+        for (var y = 0; y<1000; y+=1){
+            if (powers[max_x][max_y] < powers[x][y]){
+                max_x = x;
+                max_y = y;
+            }
+        }
+    }
+    addHill(context, max_x,max_y,10);
+    //var hill_cnt = getRandomInt(3,8);//+3000;
+    //for (var i = 0 ; i < hill_cnt ; i++){
+    // /   var x = getRandomInt(0,100);
+    //    var y = getRandomInt(0,100);
+    //    var r = getRandomInt(10,20);
+    //    addHill(context, x,y,r);
+    //}
 
     document.body.appendChild(canvas);
 </script>

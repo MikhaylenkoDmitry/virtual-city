@@ -208,46 +208,64 @@ function generateRiver(  map_mesh){
     return [map_mesh, geom];
 
 }
+function placeCastle(){
+    var r = 500;
+    var context =  this.river_canvas.getContext("2d");
+    var img_data = context.getImageData(0, 0, this.width, this.width);
+    var powers = new Array();
+    for (var x = 0; x < this.width; x ++){
+        powers[x] = new Array();
+        for (var y = 0; y<this.width; y++){
+            powers[x][y] = 0;
+        }
+    }
+    function increase(powers, x, y, r,r2){
+        var i = x - r/2;
+        if (i<0) i =0;
+        for ( ; i < x+r/2 && i < this.width; i++){
+            var j = y -r/2;
+            if (j<0) j=0;
+            for (; j < y + r/2 && j < this.width; j++){
+                if (Math.abs(x-i)+Math.abs(y-j) < r)
+                    if (Math.abs(x-i)+Math.abs(y-j) < r2){
+                       powers[i][j]-=10;
+                    }else
+                    powers[i][j]+=1;
+            }
+        }
+    }
+    for (var x = 0; x < this.width; x +=30){
+        for (var y = 0; y < this.width; y+=30){
+            if (img_data.data[xyindex(x-this.width/2,y-this.width/2,this.width)]>0){
+                increase(powers,x,y,r,70);
 
+            }
+        }
+    }
+    var max_x = 0;
+    var max_y = 0;
+    for (var x = 0; x < 1000; x +=1){
+        for (var y = 0; y<1000; y+=1){
+            if (powers[max_x][max_y] < powers[x][y]){
+                max_x = x;
+                max_y = y;
+            }
+        }
+    }
+    return [max_x-this.width/2, max_y-this.width/2];
+}
 function placeStuff(scene){
 
     canvas = this.river_canvas.getContext("2d");
     canvasImageData = canvas.getImageData(0, 0, this.width, this.height);
     //замок
-    /*
-    var zm_x_0 = 0;
-    var zm_y_0 = 0;
-
+    zm = placeCastle();
+    var zm_x_0 = zm[0];
+    var zm_y_0 = zm[1];
     var zm_size = 40;
     var zm_angle = Math.random()*Math.PI;
-    var step = 1;
-
-    do{
-        zm_x_1 = zm_x_0 + zm_size*Math.sin( zm_angle);
-        zm_y_1 = zm_y_0 - zm_size*Math.cos(zm_angle);
-        zm_x_2 = zm_x_0 + zm_size*Math.cos( zm_angle);
-        zm_y_2 = zm_y_0 + zm_size*Math.sin(zm_angle);
-        zm_x_3 = zm_x_2 + zm_size*Math.sin( zm_angle);
-        zm_y_3 = zm_y_2 + zm_size*Math.cos(zm_angle);
-        //zm_x_0 += 10;
-        zm_y_0 += 10;
-        index_0 = xyindex(zm_x_0,zm_y_0,this.width);
-        index_1 = xyindex(zm_x_1,zm_y_1,this.width);
-        index_2 = xyindex(zm_x_2,zm_y_2,this.width);
-        index_3 = xyindex(zm_x_3,zm_y_3,this.width);
-
-         generateBuilding(scene, zm_x_0, 10*step,  zm_y_0 , zm_size, zm_size, zm_angle);
-         generateBuilding(scene, zm_x_1, 10*step+5, zm_y_1 , 10, 10, zm_angle);
-         generateBuilding(scene, zm_x_2, 10*step, zm_y_2 , 10, 10, zm_angle);
-         generateBuilding(scene, zm_x_3, 10*step, zm_y_3 , 10, 10, zm_angle);
-         step+=1;
-
-    }
-    while ( canvasImageData.data[index_0] > 0 || canvasImageData.data[index_2] > 0 ||
-            canvasImageData.data[index_1] > 0 || canvasImageData.data[index_3] > 0 )
-     */
-    //generateBuilding(scene, zm_x_0, 0, -zm_y_0 , zm_size, zm_size, zm_angle);
-
+    generateBuilding(scene, zm_x_0, 0, zm_y_0 , zm_size, zm_size, zm_angle);
+    //здания
     for (var i = 0; i< this.BUILDINGS_COUNT; i++ ){
         var x = getRandomInt(0,this.width)-this.width/2;
         var y = getRandomInt(0,this.height) - this.height/2;
@@ -257,7 +275,7 @@ function placeStuff(scene){
             i-=1;
             continue;
         }  else{
-            generateBuilding(scene, x, -1,y , 10, 10, Math.random()*Math.PI);
+            generateBuilding(scene, x, -+3,y , 10, 10, Math.random()*Math.PI);
         }
 
     }
