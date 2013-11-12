@@ -14,7 +14,7 @@
     var lastTime = 0, control;
     var testtexture1;
 
-    var textureNames = [['grass', 'grass.jpg'], ['testtexture1','testtexture1.png'], ['sky_box', 'sky_box.jpg']];
+    var textureNames = [['grass', 'grass.jpg'], ['testtexture1','testtexture1.png'], ['sky_box', 'sky_box.jpg'], ['water','water1.jpg']];
 
 	var materialFactory = {};
 
@@ -26,7 +26,11 @@
 
 		this.materials = [];
 		for(i=0; i<textureNames.length; i++){
-			this.materials[i] = new THREE.MeshBasicMaterial({map: this.textures[i]});
+			if(textureNames[i][0] == 'water'){
+				this.materials[i] = new THREE.MeshBasicMaterial({map: this.textures[i]});
+			} else {
+				this.materials[i] = new THREE.MeshBasicMaterial({map: this.textures[i]});
+			}
 		}
 
 		initscene();
