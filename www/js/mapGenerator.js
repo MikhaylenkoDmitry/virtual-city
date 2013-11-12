@@ -107,7 +107,7 @@ function generateMap() {
     mesh = new THREE.Mesh( geometry, materialFactory.getMaterialByName('grass') );
     mesh_and_river = generateRiver(mesh);
     mesh_and_river[0].rotation.x -= 3.1415/2;
-    mesh_and_river[1] = new THREE.Mesh( mesh_and_river[1], materialFactory.getMaterialByName('grass'));
+    mesh_and_river[1] = new THREE.Mesh( mesh_and_river[1], materialFactory.getMaterialByName('water'));
     mesh_and_river[1].rotation.x -= 3.1415/2;
     return mesh_and_river;
 }

@@ -75,18 +75,24 @@ function generateBuildingToArray(subBuildingLevel, x, y, z, width, depth, angle)
     var roofRatio = getHouseRoofRatio();
     var floorsCount = getHouseFloorsCount(subBuildingLevel);
     var baseWidthRatio = getHouseBaseWidthRatio();
+    var floorHeight = height * (1 - roofRatio) / floorsCount;
 
-    result.push.apply(result, generateBarnMesh(0, 0, 0, width, height, depth, roofRatio, baseWidthRatio, floorsCount, angle, subBuildingLevel));
+    var baseMaterial = materialFactory.getMaterialByName('houseBasement');
+    var floorMaterial = materialFactory.getMaterialByName('houseFloor');
+
+    if(subBuildingLevel > 0)
+        baseMaterial = floorMaterial;
+
+    result.push.apply(result, generateBarnMesh(0, 0, 0, width, height, depth, roofRatio, baseWidthRatio, floorsCount, baseMaterial, floorMaterial));
 
     if(subBuildingLevel == 0)
     {
-        result.push(generateChimneyMesh(width/4, 0, depth*getChimneyPosition(), width/10, height*1.2, width/10, angle));
+        result.push(generateChimneyMesh(width/4, floorHeight*floorsCount, depth*getChimneyPosition(), width/10, height*roofRatio, width/10, angle));
     }
 
     // SubBuildings
     if(subBuildingLevel < 2)
     {
-        var floorHeight = height * (1 - roofRatio) / floorsCount;
         var subBuildingsCount = getSubBuildingsCount(subBuildingLevel);
 
         for(var i = 0; i < subBuildingsCount; i++)
