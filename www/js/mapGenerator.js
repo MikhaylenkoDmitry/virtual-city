@@ -1,5 +1,5 @@
 
-
+this.BUILDINGS_COUNT = 50;
 this.width = 1000;
 this.height = 1000;
 this.segments = 128;
@@ -129,10 +129,10 @@ function generateRiver(  map_mesh){
 
     canvas = this.river_canvas.getContext("2d");
     canvas.strokeStyle = "red";
-    canvas.lineWidth=this.width/10|0;
+    canvas.lineWidth=this.width/10|0; //ширина реки
     canvas.beginPath();
     canvas.moveTo(0,0);
-    canvas.bezierCurveTo(getRandomInt(100,1000),getRandomInt(100,200),getRandomInt(100,200),
+    canvas.bezierCurveTo(getRandomInt(100,1000),getRandomInt(100,1000),getRandomInt(100,1000),
         getRandomInt(100,1000),this.width,this.height);
     canvas.stroke();
 
@@ -192,4 +192,37 @@ function generateRiver(  map_mesh){
     map_mesh.geometry.verticesNeedUpdate = true;
     return [map_mesh, geom];
 
+}
+
+function placeStuff(scene){
+    canvas = this.river_canvas.getContext("2d");
+    canvasImageData = canvas.getImageData(0, 0, this.width, this.height);
+
+    for (var i = 0; i< this.BUILDINGS_COUNT; i++ ){
+        var x = getRandomInt(0,this.width)-this.width/2;
+        var y = getRandomInt(0,this.height) - this.height/2;
+        var index = (x + y * canvasImageData.width) * 4;
+
+        if (canvasImageData.data[index]>0){
+            i-=0;
+            continue;
+        }  else{
+        generateBuilding(scene, y, 0,x , 10, 10, Math.random()*Math.PI);
+        }
+
+    }
+    var x= -this.width/2;
+    var y = -this.width/2;
+    for (; x < this.width/2; x += 20){
+        generateCommonWall(scene, x, y, x+20, y, 20, 100);
+    }
+    for (; y < this.width/2; y += 20){
+        generateCommonWall(scene, x, y, x+20, y, 10, 100);
+    }
+    for (; x > -this.width/2; x -= 20){
+            generateCommonWall(scene, x, y, x+20, y, 10, 100);
+    }
+    for (; y >- this.width/2; y -= 20){
+            generateCommonWall(scene, x, y, x+20, y, 10, 100);
+        }
 }
