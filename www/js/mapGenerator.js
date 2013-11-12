@@ -2,8 +2,8 @@
 this.BUILDINGS_COUNT = 500;
 this.width = 1000;
 this.height = 1000;
-this.segments = 128;
-this.smoothingFactor  = 100;
+this.segments = 256;
+this.smoothingFactor  = 20;
 this.river_canvas;
 
 function getRandomInt(min, max)
@@ -112,12 +112,15 @@ function generateMap() {
     return mesh_and_river;
 }
 
-
-function vertex_index2image_index(a, map_mesh, image_width){
+function xyindex(x, y, width){
+       return (((x + width/2|0) + (-y + width/2|0) * width) *4);
+}
+function vertex_index2image_index(a, map_mesh){
             ver_i = a;
-            i_x = map_mesh.geometry.vertices[ver_i].x + this.width/2|0;
-            i_y = map_mesh.geometry.vertices[ver_i].y + this.height/2|0;
-            return index_a = (i_x + i_y * image_width) * 4;
+            i_x = map_mesh.geometry.vertices[ver_i].x;// + this.width/2|0;
+            i_y = -map_mesh.geometry.vertices[ver_i].y;// + this.height/2|0;
+            //return ((i_x + i_y * this.width) * 4)|0;
+            return xyindex(i_x, i_y, this.width);
 
 }
 
@@ -129,11 +132,24 @@ function generateRiver(  map_mesh){
 
     canvas = this.river_canvas.getContext("2d");
     canvas.strokeStyle = "red";
+    canvas.rect(0,0,this.width,this.height);
+    canvas.fillStyle = "black";
+    canvas.fill;
     canvas.lineWidth=this.width/10|0; //ширина реки
     canvas.beginPath();
     canvas.moveTo(0,0);
-    canvas.bezierCurveTo(getRandomInt(100,1000),getRandomInt(100,1000),getRandomInt(100,1000),
-        getRandomInt(100,1000),this.width,this.height);
+    this.river_canvas.x_0 = 0;
+    this.river_canvas.y_0 = 0;
+    this.river_canvas.x_1 = getRandomInt(100,this.width);
+    this.river_canvas.y_1 = getRandomInt(100,this.width);
+    this.river_canvas.x_2 = getRandomInt(100,this.width);
+    this.river_canvas.y_2 = getRandomInt(100,this.width);
+    this.river_canvas.x_3 = this.width;
+    this.river_canvas.y_3 = this.width;
+
+    canvas.bezierCurveTo(   this.river_canvas.x_1,this.river_canvas.y_1,
+                            this.river_canvas.x_2,this.river_canvas.y_2,
+                            this.river_canvas.x_3,this.river_canvas.y_3);
     canvas.stroke();
 
     var geom = new THREE.Geometry();
@@ -147,13 +163,12 @@ function generateRiver(  map_mesh){
         geom.vertices.push(v);
     }
     for (var i = 0; i < map_mesh.geometry.faces.length; i++){
-        i_x = (map_mesh.geometry.faces[i].centroid.x + this.width/2)|0  ;
-        i_y = (map_mesh.geometry.faces[i].centroid.y + this.width/2)|0  ;
-        index = (i_x + i_y * canvasImageData.width) * 4;
 
-        index_a = vertex_index2image_index(map_mesh.geometry.faces[i].a, map_mesh, canvasImageData.width);
-        index_b = vertex_index2image_index(map_mesh.geometry.faces[i].b, map_mesh, canvasImageData.width);
-        index_c = vertex_index2image_index(map_mesh.geometry.faces[i].c, map_mesh, canvasImageData.width);
+        index = xyindex(map_mesh.geometry.faces[i].centroid.x, -map_mesh.geometry.faces[i].centroid.y, this.width);
+
+        index_a = vertex_index2image_index(map_mesh.geometry.faces[i].a, map_mesh);
+        index_b = vertex_index2image_index(map_mesh.geometry.faces[i].b, map_mesh);
+        index_c = vertex_index2image_index(map_mesh.geometry.faces[i].c, map_mesh);
 
         //if (canvasImageData.data[index] > 0 )        {
          //   geom.faces.push(map_mesh.geometry.faces[i]);
@@ -195,37 +210,71 @@ function generateRiver(  map_mesh){
 }
 
 function placeStuff(scene){
+
     canvas = this.river_canvas.getContext("2d");
     canvasImageData = canvas.getImageData(0, 0, this.width, this.height);
+    //замок
+    /*
+    var zm_x_0 = 0;
+    var zm_y_0 = 0;
+
+    var zm_size = 40;
+    var zm_angle = Math.random()*Math.PI;
+    var step = 1;
+
+    do{
+        zm_x_1 = zm_x_0 + zm_size*Math.sin( zm_angle);
+        zm_y_1 = zm_y_0 - zm_size*Math.cos(zm_angle);
+        zm_x_2 = zm_x_0 + zm_size*Math.cos( zm_angle);
+        zm_y_2 = zm_y_0 + zm_size*Math.sin(zm_angle);
+        zm_x_3 = zm_x_2 + zm_size*Math.sin( zm_angle);
+        zm_y_3 = zm_y_2 + zm_size*Math.cos(zm_angle);
+        //zm_x_0 += 10;
+        zm_y_0 += 10;
+        index_0 = xyindex(zm_x_0,zm_y_0,this.width);
+        index_1 = xyindex(zm_x_1,zm_y_1,this.width);
+        index_2 = xyindex(zm_x_2,zm_y_2,this.width);
+        index_3 = xyindex(zm_x_3,zm_y_3,this.width);
+
+         generateBuilding(scene, zm_x_0, 10*step,  zm_y_0 , zm_size, zm_size, zm_angle);
+         generateBuilding(scene, zm_x_1, 10*step+5, zm_y_1 , 10, 10, zm_angle);
+         generateBuilding(scene, zm_x_2, 10*step, zm_y_2 , 10, 10, zm_angle);
+         generateBuilding(scene, zm_x_3, 10*step, zm_y_3 , 10, 10, zm_angle);
+         step+=1;
+
+    }
+    while ( canvasImageData.data[index_0] > 0 || canvasImageData.data[index_2] > 0 ||
+            canvasImageData.data[index_1] > 0 || canvasImageData.data[index_3] > 0 )
+     */
+    //generateBuilding(scene, zm_x_0, 0, -zm_y_0 , zm_size, zm_size, zm_angle);
 
     for (var i = 0; i< this.BUILDINGS_COUNT; i++ ){
         var x = getRandomInt(0,this.width)-this.width/2;
         var y = getRandomInt(0,this.height) - this.height/2;
-        var index = (x+this.width/2 + (y+this.width/2) * canvasImageData.width) * 4;
+        var index = xyindex(x,y, this.width);
 
         if (canvasImageData.data[index]>0){
             i-=1;
             continue;
         }  else{
-        generateBuilding(scene, x, +1,-y , 10, 10, Math.random()*Math.PI);
+            generateBuilding(scene, x, -1,y , 10, 10, Math.random()*Math.PI);
         }
 
     }
+
     var x= -this.width/2;
     var y = -this.width/2;
     for (; x < this.width/2; x += 10){
-      // generateCommonWall(scene, x, y, x+10, y, 10, 20);
+       generateCommonWall(scene, x, y, x+10, y, 10, 20);
 
-      //      generateCommonWall(scene, x, y, x, y+10, 10, 20);
     }
     for (; y < this.width/2; y += 10){
-       generateCommonWall(scene, x, y, x+10, y, 10, 20);
+       generateCommonWall(scene, x, y, x, y+10, 10, 20);
     }
     for (; x > -this.width/2; x -= 10){
-       //     generateCommonWall(scene, x, y, x+10, y, 10, 20);
-        //    generateCommonWall(scene, x, y, x , y+10, 10, 20);
+            generateCommonWall(scene, x, y, x+10, y, 10, 20);
     }
     for (; y >- this.width/2; y -= 10){
-                    generateCommonWall(scene, x, y, x+10, y, 10, 20);
+                    generateCommonWall(scene, x, y, x, y+10, 10, 20);
         }
 }

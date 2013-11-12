@@ -1,0 +1,63 @@
+<html>
+<body>
+<script src="js/mapGenerator.js"></script>
+<script>
+    function addHill(context,x,y,r){
+        var centerX = x;
+        var centerY = y;
+        var radius = r;
+        var grd = context.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius);
+
+
+        // light blue
+        grd.addColorStop(0, "rgba(0, 0, 255, 0.01)");
+        // dark blue
+        grd.addColorStop(1, "rgba(0, 0, 0, 0.01)");
+        context.fillStyle = grd;
+        context.beginPath();
+        context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+        context.fill();
+
+    }
+    canvas = this.document.createElement("canvas");
+    canvas.width = 1000;
+    canvas.height = 1000;
+    canvas.visibility = true;
+
+
+
+
+    var context = canvas.getContext('2d');
+    context.strokeStyle = "red";
+    context.lineWidth=this.width/10|0; //ширина реки
+
+
+    context.beginPath();
+    context.moveTo(0,0);
+    this.river_canvas = 0;
+    this.width = 1000;
+    this.river_canvas.x_0 = 0;
+    this.river_canvas.y_0 = 0;
+    this.river_canvas.x_1 = getRandomInt(100,this.width);
+    this.river_canvas.y_1 = getRandomInt(100,this.width);
+    this.river_canvas.x_2 = getRandomInt(100,this.width);
+    this.river_canvas.y_2 = getRandomInt(100,this.width);
+    this.river_canvas.x_3 = this.width;
+    this.river_canvas.y_3 = this.width;
+
+    context.bezierCurveTo(   this.river_canvas.x_1,this.river_canvas.y_1,
+    this.river_canvas.x_2,this.river_canvas.y_2,
+    this.river_canvas.x_3,this.river_canvas.y_3);
+    context.stroke();
+    var hill_cnt = getRandomInt(3,8);//+3000;
+    for (var i = 0 ; i < hill_cnt ; i++){
+        var x = getRandomInt(0,100);
+        var y = getRandomInt(0,100);
+        var r = getRandomInt(10,20);
+        addHill(context, x,y,r);
+    }
+
+    document.body.appendChild(canvas);
+</script>
+
+</body></html>
