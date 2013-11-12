@@ -76,8 +76,7 @@ function generateBuildingToArray(subBuildingLevel, x, y, z, width, depth, angle)
     var floorsCount = getHouseFloorsCount(subBuildingLevel);
     var baseWidthRatio = getHouseBaseWidthRatio();
 
-    var building = generateBarnMesh(0, 0, 0, width, height, depth, roofRatio, baseWidthRatio, floorsCount, angle, subBuildingLevel);
-    result.push(building);
+    result.push.apply(result, generateBarnMesh(0, 0, 0, width, height, depth, roofRatio, baseWidthRatio, floorsCount, angle, subBuildingLevel));
 
     if(subBuildingLevel == 0)
     {

@@ -14,14 +14,14 @@
     var lastTime = 0, control;
     var testtexture1;
 
-    var textureNames = [['grass', 'grass.jpg'], ['testtexture1','testtexture1.png']];
+    var textureNames = [['grass', 'grass.jpg'], ['testtexture1','testtexture1.png'], ['sky_box', 'sky_box.jpg']];
 
 	var materialFactory = {};
 
 	materialFactory.loadTextures = function(){
 		this.textures = [];
 		for(i=0; i<textureNames.length; i++){
-			this.textures.push( THREE.ImageUtils.loadTexture('images/textures/grass.jpg') );
+			this.textures.push( THREE.ImageUtils.loadTexture('images/textures/'+textureNames[i][1]) );
 		}
 
 		this.materials = [];
