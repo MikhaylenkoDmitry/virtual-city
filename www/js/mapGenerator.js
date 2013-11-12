@@ -107,11 +107,19 @@ function generateMap() {
     mesh = new THREE.Mesh( geometry, materialFactory.getMaterialByName('grass') );
     mesh_and_river = generateRiver(mesh);
     mesh_and_river[0].rotation.x -= 3.1415/2;
-    return mesh_and_river[0];
+    mesh_and_river[1] = new THREE.Mesh( mesh_and_river[1], materialFactory.getMaterialByName('grass'));
+    mesh_and_river[1].rotation.x -= 3.1415/2;
+    return mesh_and_river;
 }
 
 
+function vertex_index2image_index(a, map_mesh, image_width){
+            ver_i = a;
+            i_x = map_mesh.geometry.vertices[ver_i].x + this.width/2|0;
+            i_y = map_mesh.geometry.vertices[ver_i].y + this.height/2|0;
+            return index_a = (i_x + i_y * image_width) * 4;
 
+}
 
 
 function generateRiver(  map_mesh){
@@ -132,28 +140,43 @@ function generateRiver(  map_mesh){
 
     canvasImageData = canvas.getImageData(0, 0, this.width, this.height);
 
-    geom.vertices = map_mesh.geometry.vertices;
+    //geom.vertices = map_mesh.geometry.vertices.slice(0);
+    for (var i = 0; i< map_mesh.geometry.vertices.length; i++){
+        k = map_mesh.geometry.vertices[i];
+        var v = new THREE.Vector3( k.x, k.y, k.z );
+        geom.vertices.push(v);
+    }
     for (var i = 0; i < map_mesh.geometry.faces.length; i++){
         i_x = (map_mesh.geometry.faces[i].centroid.x + this.width/2)|0  ;
         i_y = (map_mesh.geometry.faces[i].centroid.y + this.width/2)|0  ;
         index = (i_x + i_y * canvasImageData.width) * 4;
         if (canvasImageData.data[index] > 0 )        {
             geom.faces.push(map_mesh.geometry.faces[i]);
-            map_mesh.geometry.vertices[map_mesh.geometry.faces[i].a].setZ(-200);
-            map_mesh.geometry.vertices[map_mesh.geometry.faces[i].b].setZ(-200);
-            map_mesh.geometry.vertices[map_mesh.geometry.faces[i].c].setZ(-200);
+            geom.faceVertexUvs[0].push( [
+            new THREE.Vector2(0,1),
+            new THREE.Vector2(1,1),
+            new THREE.Vector2(1,0)
+            ] );
+            index_a = vertex_index2image_index(map_mesh.geometry.faces[i].a, map_mesh, canvasImageData.width);
+            index_b = vertex_index2image_index(map_mesh.geometry.faces[i].b, map_mesh, canvasImageData.width);
+            index_c = vertex_index2image_index(map_mesh.geometry.faces[i].c, map_mesh, canvasImageData.width);
+
+            if (canvasImageData.data[index_a] > 0 && canvasImageData.data[index_b] > 0&& canvasImageData.data[index_c] > 0)
+                map_mesh.geometry.vertices[map_mesh.geometry.faces[i].b].setZ(-1);
+            //map_mesh.geometry.vertices[map_mesh.geometry.faces[i].b].setZ(-200);
+            //map_mesh.geometry.vertices[map_mesh.geometry.faces[i].c].setZ(-200);
             }
 
     }
 
 
 
-    material = new THREE.MeshBasicMaterial( { color: 0x000033, wireframe: true  } );
+    //material = new THREE.MeshBasicMaterial( { color: 0x000033, wireframe: true  } );
 
-    var river_mesh = new THREE.Mesh( geom, material );
+    //var river_mesh = new THREE.Mesh( geom, material );
 
     map_mesh.geometry.dynamic = true;
     map_mesh.geometry.verticesNeedUpdate = true;
-    return [map_mesh, river_mesh];
+    return [map_mesh, geom];
 
 }
