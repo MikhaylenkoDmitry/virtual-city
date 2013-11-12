@@ -72,7 +72,7 @@ function addCube(geometry, x, y, z, width, height, depth)
 function addTriangularPrism(geometry, x, y, z, width, height, depth)
 {
     var pointsOffset = geometry.vertices.length;
-    
+
     // Vertices
     geometry.vertices.push(new THREE.Vector3(x, y, z));
     geometry.vertices.push(new THREE.Vector3(x + width, y, z));
@@ -124,55 +124,9 @@ function addTriangularWallRightLedge(geometry, x, y, z, width, height, depth)
     // Faces
     addTriangleFace(geometry, pointsOffset, 2, 1, 0);
     addTriangleFace(geometry, pointsOffset, 5, 3, 4);
-    //addRectangleFace(geometry, pointsOffset, 2, 5, 4, 1);
-    //addRectangleFace(geometry, pointsOffset, 2, 0, 3, 5);
-    //addRectangleFace(geometry, pointsOffset, 0, 1, 4, 3);
-}
-
-function addWall(geometry, x ,y, z, width, height, depth)
-{
-    HEIGHT_RATIO = 8; 
-    LEDGE_RATIO = width/7;
-    WIDTH_RATIO = 4;
-
-    addCube(geometry, x, y, z, width, height, depth); //main parallelepiped
-
-    addCube(geometry, x-LEDGE_RATIO, y+height, z, width/WIDTH_RATIO, height/HEIGHT_RATIO, depth); // left platform
-    addTriangularWallLeftLedge(geometry, x-LEDGE_RATIO, y+height/2 ,z, LEDGE_RATIO, height/2 ,depth ); // left additional platform 
-    
-    addCube(geometry, x+3*width/4+LEDGE_RATIO, y+height, z, width/WIDTH_RATIO, height/HEIGHT_RATIO, depth); //right plarform    
-    addTriangularWallRightLedge(geometry, x+width, y+height/2 ,z, LEDGE_RATIO, height/2 ,depth ); //right additional platform
-    
-    //crenellations
-    //1 left_platform
-    addCube(geometry, x-LEDGE_RATIO, y+height+height/HEIGHT_RATIO, z, width/WIDTH_RATIO, height/HEIGHT_RATIO, depth/13); 
-    
-    //2 left_platform
-    addCube(geometry, x-LEDGE_RATIO, y+height+height/HEIGHT_RATIO, z+3*depth/13, width/WIDTH_RATIO, height/HEIGHT_RATIO, depth/13); 
-    
-    //3 left_platform
-    addCube(geometry, x-LEDGE_RATIO, y+height+height/HEIGHT_RATIO,  z+6*depth/13, width/WIDTH_RATIO, height/HEIGHT_RATIO, depth/13);
-    
-    //4 left_platform
-    addCube(geometry, x-LEDGE_RATIO, y+height+height/HEIGHT_RATIO,  z+9*depth/13, width/WIDTH_RATIO, height/HEIGHT_RATIO, depth/13);
-    
-    //5 left_platform
-    addCube(geometry, x-LEDGE_RATIO, y+height+height/HEIGHT_RATIO,  z+12*depth/13, width/WIDTH_RATIO, height/HEIGHT_RATIO, depth/13); 
-    
-    //6 right_platform
-    addCube(geometry, x+3*width/WIDTH_RATIO+LEDGE_RATIO, y+height+height/HEIGHT_RATIO, z, width/WIDTH_RATIO, height/HEIGHT_RATIO, depth/13); 
-    
-    //7 right_platform
-    addCube(geometry, x+3*width/WIDTH_RATIO+LEDGE_RATIO, y+height+height/HEIGHT_RATIO, z+3*depth/13, width/WIDTH_RATIO, height/HEIGHT_RATIO, depth/13); 
-    
-    //8 right_platform
-    addCube(geometry, x+3*width/WIDTH_RATIO+LEDGE_RATIO, y+height+height/HEIGHT_RATIO, z+6*depth/13, width/WIDTH_RATIO, height/HEIGHT_RATIO, depth/13); 
-    
-    //9 right_platform
-    addCube(geometry, x+3*width/WIDTH_RATIO+LEDGE_RATIO, y+height+height/HEIGHT_RATIO, z+9*depth/13, width/WIDTH_RATIO, height/HEIGHT_RATIO, depth/13); 
-    
-    //10 right_platform
-    addCube(geometry, x+3*width/WIDTH_RATIO+LEDGE_RATIO, y+height+height/HEIGHT_RATIO, z+12*depth/13,  width/WIDTH_RATIO, height/HEIGHT_RATIO, depth/13); 
+    addRectangleFace(geometry, pointsOffset, 2, 5, 4, 1);
+    addRectangleFace(geometry, pointsOffset, 2, 0, 3, 5);
+    addRectangleFace(geometry, pointsOffset, 0, 1, 4, 3);
 }
 
 function rotateObject(object, angle)
@@ -186,4 +140,16 @@ function moveObject(object, x, y, z)
 {
     var transMatrix = new THREE.Matrix4().makeTranslation(x, y, z);
     object.geometry.applyMatrix(transMatrix);
+}
+
+function scaleGeomUVForLastFaces(geometry, scaleX, scaleY, faceNum)
+{
+	//faceVertexUvs means : geometry.faceVertexUvs[ materialIndex ][ faceIndex ][ vertexIndex ]
+	for(face = geometry.faceVertexUvs[0].length-faceNum-1; face < geometry.faceVertexUvs[0].length-1; face++)
+	{
+		for(vertex in geometry.faceVertexUvs[0][face]){
+			geometry.faceVertexUvs[0][face][vertex].x *= scaleX;
+			geometry.faceVertexUvs[0][face][vertex].y *= scaleY;
+		}
+	}
 }
