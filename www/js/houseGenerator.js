@@ -79,16 +79,22 @@ function generateBuildingToArray(subBuildingLevel, x, y, z, width, depth, angle)
 
     var baseMaterial = materialFactory.getMaterialByName('houseBasement');
     var floorMaterial = materialFactory.getMaterialByName('houseFloor' + getRandomInt(1, 2));
+    var firstFloorMaterial = materialFactory.getMaterialByName('firstFloor');
+    var chimneyMaterial = materialFactory.getMaterialByName("chimney");
+    var isBase = true;
 
     if(subBuildingLevel > 0)
+    {
         baseMaterial = floorMaterial;
-
-    result.push.apply(result, generateBarnMesh(0, 0, 0, width, height, depth, roofRatio, baseWidthRatio, floorsCount, baseMaterial, floorMaterial));
+        isBase = false;
+    }
 
     if(subBuildingLevel == 0)
     {
-        result.push(generateChimneyMesh(width/4, floorHeight*floorsCount, depth*getChimneyPosition(), width/10, height*roofRatio, width/10, angle));
+        result.push(generateChimneyMesh(width/4, floorHeight*floorsCount, depth*getChimneyPosition(), width/10, height*roofRatio, width/10, chimneyMaterial));
     }
+
+    result.push.apply(result, generateBarnMesh(0, 0, 0, width, height, depth, roofRatio, baseWidthRatio, floorsCount, isBase, baseMaterial, firstFloorMaterial, floorMaterial));
 
     // SubBuildings
     if(subBuildingLevel < 2)
@@ -99,7 +105,7 @@ function generateBuildingToArray(subBuildingLevel, x, y, z, width, depth, angle)
         {
             var level = Math.min(getSubBuildingLevel(), floorsCount);
 
-            result.push.apply(result, generateBuildingToArray(subBuildingLevel + 1, width, floorHeight*level, 0, depth/(subBuildingsCount+1), width, -Math.PI / 2 ));
+            result.push.apply(result, generateBuildingToArray(subBuildingLevel + 1, width, floorHeight*level, 0, depth/(subBuildingsCount+1), width+0.01, -Math.PI / 2 ));
         }
     }
 
