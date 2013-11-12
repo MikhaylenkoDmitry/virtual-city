@@ -60,9 +60,9 @@
     }
 
     function initscene(){
-        map_mesh = generateMap();
-        scene.add(map_mesh[0]);
-        scene.add(map_mesh[1]);
+        map_meshes = generateMap();
+        scene.add(map_meshes[0]);
+        scene.add(map_meshes[1]);
         generateBuilding(scene, 200, 0, 0, 200, 200, Math.PI / 3);
         generateCommonWall(scene,0, 50, 50, 10, 100);
     }
