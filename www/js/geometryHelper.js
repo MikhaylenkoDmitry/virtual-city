@@ -6,6 +6,12 @@ function addRectangleFace(geometry, pointsOffset, a, b, c, d)
 {
     geometry.faces.push(new THREE.Face3(pointsOffset + a, pointsOffset + b, pointsOffset + c));
     geometry.faces.push(new THREE.Face3(pointsOffset + c, pointsOffset + d, pointsOffset + a));
+
+	geometry.faceVertexUvs[0].push( [
+	new THREE.Vector2(0,1),
+	new THREE.Vector2(1,1),
+	new THREE.Vector2(1,0)
+	] );
 }
 
 function addTriangleFace(geometry, pointsOffset, a, b, c)

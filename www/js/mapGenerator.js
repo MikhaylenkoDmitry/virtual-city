@@ -15,8 +15,6 @@ function getRandomInt(min, max)
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-
-
 this.diamondSquare = function() {
         this.terrain = new Array();
 
@@ -106,11 +104,7 @@ function generateMap() {
     */
 
     //this.texture = 'images/textures/grass.jpg';
-    material = new THREE.MeshBasicMaterial( { color: 0x003300, wireframe: true  } );
-    //this.material = this.material = new THREE.MeshBasicMaterial({
-    //    map: THREE.ImageUtils.loadTexture(this.texture)
-    //});
-    mesh = new THREE.Mesh( geometry, material );
+    mesh = new THREE.Mesh( geometry, materialFactory.getMaterialByName('grass') );
     mesh = generateRiver(mesh);
     mesh.rotation.x -= 3.1415/2;
     return mesh;
