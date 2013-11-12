@@ -56,6 +56,47 @@ function addTriangularPrism(geometry, x, y, z, width, height, depth)
     addRectangleFace(geometry, pointsOffset, 0, 1, 4, 3);
 }
 
+function addTriangularWallLeftLedge(geometry, x, y, z, width, height, depth)
+{
+    var pointsOffset = geometry.vertices.length;
+
+    // Vertices
+    geometry.vertices.push(new THREE.Vector3(x+width, y, z));
+    geometry.vertices.push(new THREE.Vector3(x+width, y + height, z));
+    geometry.vertices.push(new THREE.Vector3(x, y + height, z));
+    geometry.vertices.push(new THREE.Vector3(x+width, y, z+depth));
+    geometry.vertices.push(new THREE.Vector3(x+width, y + height, z+depth));
+    geometry.vertices.push(new THREE.Vector3(x, y + height, z+depth));
+
+    // Faces
+    addTriangleFace(geometry, pointsOffset, 2, 1, 0);
+    addTriangleFace(geometry, pointsOffset, 5, 3, 4);
+    addRectangleFace(geometry, pointsOffset, 2, 5, 4, 1);
+    addRectangleFace(geometry, pointsOffset, 2, 0, 3, 5);
+    addRectangleFace(geometry, pointsOffset, 0, 1, 4, 3);
+}
+
+function addTriangularWallRightLedge(geometry, x, y, z, width, height, depth)
+{
+    var pointsOffset = geometry.vertices.length;
+
+    // Vertices
+    geometry.vertices.push(new THREE.Vector3(x, y, z));
+    geometry.vertices.push(new THREE.Vector3(x, y + height, z));
+    geometry.vertices.push(new THREE.Vector3(x+width, y + height, z));
+    geometry.vertices.push(new THREE.Vector3(x, y, z+depth));
+    geometry.vertices.push(new THREE.Vector3(x, y + height, z+depth));
+    geometry.vertices.push(new THREE.Vector3(x+width, y + height, z+depth));
+
+
+    // Faces
+    addTriangleFace(geometry, pointsOffset, 2, 1, 0);
+    addTriangleFace(geometry, pointsOffset, 5, 3, 4);
+    addRectangleFace(geometry, pointsOffset, 2, 5, 4, 1);
+    addRectangleFace(geometry, pointsOffset, 2, 0, 3, 5);
+    addRectangleFace(geometry, pointsOffset, 0, 1, 4, 3);
+}
+
 function rotateObject(object, angle)
 {
     var rotObjectMatrix = new THREE.Matrix4().makeRotationAxis((new THREE.Vector3(0, 1, 0)).normalize(), angle);

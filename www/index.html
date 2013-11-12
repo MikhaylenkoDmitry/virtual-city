@@ -3,6 +3,8 @@
 <script src="js/three.min.js"></script>
 <script src="js/geometryHelper.js"></script>
 <script src="js/basicBuildingGenerator.js"></script>
+<script src="js/basicWallGenerator.js"></script>
+<script src="js/WallGenerator.js"></script>
 <script src="js/houseGenerator.js"></script>
 <script src="js/mapGenerator.js"></script>
 <script src="js/FirstPersonControls.js"></script>
@@ -31,6 +33,7 @@
         scene.add(map_mesh);
 
         generateBuilding(scene, 200, 0, 0, 200, 200, Math.PI / 3);
+        generateCommonWall(scene,0, 50, 50, 10, 100);
 
         renderer = new THREE.WebGLRenderer();
         renderer.setSize( window.innerWidth, window.innerHeight );
