@@ -150,22 +150,35 @@ function generateRiver(  map_mesh){
         i_x = (map_mesh.geometry.faces[i].centroid.x + this.width/2)|0  ;
         i_y = (map_mesh.geometry.faces[i].centroid.y + this.width/2)|0  ;
         index = (i_x + i_y * canvasImageData.width) * 4;
-        if (canvasImageData.data[index] > 0 )        {
-            geom.faces.push(map_mesh.geometry.faces[i]);
-            geom.faceVertexUvs[0].push( [
-            new THREE.Vector2(0,1),
-            new THREE.Vector2(1,1),
-            new THREE.Vector2(1,0)
-            ] );
-            index_a = vertex_index2image_index(map_mesh.geometry.faces[i].a, map_mesh, canvasImageData.width);
-            index_b = vertex_index2image_index(map_mesh.geometry.faces[i].b, map_mesh, canvasImageData.width);
-            index_c = vertex_index2image_index(map_mesh.geometry.faces[i].c, map_mesh, canvasImageData.width);
 
-            if (canvasImageData.data[index_a] > 0 && canvasImageData.data[index_b] > 0&& canvasImageData.data[index_c] > 0)
-                map_mesh.geometry.vertices[map_mesh.geometry.faces[i].b].setZ(-1);
-            //map_mesh.geometry.vertices[map_mesh.geometry.faces[i].b].setZ(-200);
-            //map_mesh.geometry.vertices[map_mesh.geometry.faces[i].c].setZ(-200);
+        index_a = vertex_index2image_index(map_mesh.geometry.faces[i].a, map_mesh, canvasImageData.width);
+        index_b = vertex_index2image_index(map_mesh.geometry.faces[i].b, map_mesh, canvasImageData.width);
+        index_c = vertex_index2image_index(map_mesh.geometry.faces[i].c, map_mesh, canvasImageData.width);
+
+        //if (canvasImageData.data[index] > 0 )        {
+         //   geom.faces.push(map_mesh.geometry.faces[i]);
+         //   geom.faceVertexUvs[0].push( [
+         //   new THREE.Vector2(0,1),
+         //   new THREE.Vector2(1,1),
+         //   new THREE.Vector2(1,0)
+         //   ] );
+        if (canvasImageData.data[index_a] > 0 && canvasImageData.data[index_b] > 0 && canvasImageData.data[index_c] > 0){
+                map_mesh.geometry.vertices[map_mesh.geometry.faces[i].c].setZ(-200);
+        } //else {
+            if (map_mesh.geometry.vertices[map_mesh.geometry.faces[i].a].z<-10 ||
+                map_mesh.geometry.vertices[map_mesh.geometry.faces[i].b].z<-10 ||
+                map_mesh.geometry.vertices[map_mesh.geometry.faces[i].c].z<-10 ||
+                canvasImageData.data[index_a] > 0 || canvasImageData.data[index_b] > 0 || canvasImageData.data[index_c] > 0){
+            //if (canvasImageData.data[index_a] > 0 || canvasImageData.data[index_b] > 0 || canvasImageData.data[index_c] > 0)
+                geom.faces.push(map_mesh.geometry.faces[i]);
+                geom.faceVertexUvs[0].push( [
+                    new THREE.Vector2(0,1),
+                    new THREE.Vector2(1,1),
+                    new THREE.Vector2(1,0)
+                ] );
             }
+            //map_mesh.geometry.vertices[map_mesh.geometry.faces[i].b].setZ(-200);
+        //}
 
     }
 
