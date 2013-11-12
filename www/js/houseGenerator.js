@@ -78,7 +78,7 @@ function generateBuildingToArray(subBuildingLevel, x, y, z, width, depth, angle)
     var floorHeight = height * (1 - roofRatio) / floorsCount;
 
     var baseMaterial = materialFactory.getMaterialByName('houseBasement');
-    var floorMaterial = materialFactory.getMaterialByName('houseFloor');
+    var floorMaterial = materialFactory.getMaterialByName('houseFloor' + getRandomInt(1, 2));
 
     if(subBuildingLevel > 0)
         baseMaterial = floorMaterial;
