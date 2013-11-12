@@ -213,16 +213,19 @@ function placeStuff(scene){
     }
     var x= -this.width/2;
     var y = -this.width/2;
-    for (; x < this.width/2; x += 20){
-        generateCommonWall(scene, x, y, x+20, y, 20, 100);
+    for (; x < this.width/2; x += 10){
+      // generateCommonWall(scene, x, y, x+10, y, 10, 20);
+
+      //      generateCommonWall(scene, x, y, x, y+10, 10, 20);
     }
-    for (; y < this.width/2; y += 20){
-        generateCommonWall(scene, x, y, x+20, y, 10, 100);
+    for (; y < this.width/2; y += 10){
+       generateCommonWall(scene, x, y, x+10, y, 10, 20);
     }
-    for (; x > -this.width/2; x -= 20){
-            generateCommonWall(scene, x, y, x+20, y, 10, 100);
+    for (; x > -this.width/2; x -= 10){
+       //     generateCommonWall(scene, x, y, x+10, y, 10, 20);
+         //   generateCommonWall(scene, x, y, x+1 , y+10, 10, 20);
     }
-    for (; y >- this.width/2; y -= 20){
-            generateCommonWall(scene, x, y, x+20, y, 10, 100);
+    for (; y >- this.width/2; y -= 10){
+                    generateCommonWall(scene, x, y, x+10, y, 10, 20);
         }
 }
