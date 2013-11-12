@@ -14,7 +14,7 @@
     var lastTime = 0, control;
     var testtexture1;
 
-    var textureNames = [['grass', 'grass2.jpg'], ['testtexture1','testtexture1.png'], ['sky_box', 'sky_box.jpg'], ['water','water1.jpg'], ['chimney', 'houseChimney.jpg'], ['houseBasement', 'houseBasement.jpg'], ['houseFloor1', 'houseFloor1.jpg'], ['houseFloor2', 'houseFloor2.jpg'], ['wall1','wall1.jpg'],['wall2','wall2.jpg']];
+    var textureNames = [['grass', 'grass2.jpg'], ['testtexture1','testtexture1.png'], ['sky_box', 'sky_box.jpg'], ['water','water.jpg'], ['chimney', 'houseChimney.jpg'], ['houseBasement', 'houseBasement.jpg'], ['houseFloor1', 'houseFloor1.jpg'], ['houseFloor2', 'houseFloor2.jpg'], ['wall1','wall1.jpg'],['wall2','wall2.jpg']];
 
 	var materialFactory = {};
 
@@ -28,7 +28,6 @@
 		for(i=0; i<textureNames.length; i++){
 			if(textureNames[i][0] == 'grass'){
 				this.textures[i].anisotropy  = renderer.getMaxAnisotropy();
-				this.textures[i].needsUpdate = true;
 				this.textures[i].wrapS = this.textures[i].wrapT = THREE.RepeatWrapping;
 				this.textures[i].repeat.set(8, 8);
 				this.materials[i] = new THREE.MeshBasicMaterial({map: this.textures[i]});
@@ -44,6 +43,14 @@
     	for(i=0; i<textureNames.length; i++){
     		if( name == textureNames[i][0] ){
     			return this.materials[i];
+    		}
+    	}
+    }
+
+    materialFactory.getTextureByName = function(name){
+    	for(i=0; i<textureNames.length; i++){
+    		if (name == textureNames[i][0]){
+    			return this.textures[i];
     		}
     	}
     }
