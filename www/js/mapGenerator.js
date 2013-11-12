@@ -114,27 +114,28 @@ function generateMap() {
 
 
 function generateRiver(  map_mesh){
-
-
     this.river_canvas =  document.createElement("canvas");
     this.river_canvas.width = this.width;
     this.river_canvas.height = this.height;
-    canvas = this.river_canvas.getContext("2d");
 
+    canvas = this.river_canvas.getContext("2d");
     canvas.strokeStyle = "red";
     canvas.lineWidth=this.width/10|0;
     canvas.beginPath();
     canvas.moveTo(0,0);
     canvas.bezierCurveTo(getRandomInt(100,2000),getRandomInt(100,200),getRandomInt(100,200),
         getRandomInt(100,2000),this.width,this.height);
-    //canvas.lineTo(this.width+50,this.height+50);
     canvas.stroke();
 
+    canvasImageData = canvas.getImageData(0, 0, this.width, this.height);
+    for (var i=0; i < map_mesh.geometry.vertices.length; i++) {
+        i_x = map_mesh.geometry.vertices[i].x + this.width/2|0;
+        i_y = map_mesh.geometry.vertices[i].y + this.height/2|0;
+        index = (i_x + i_y * canvasImageData.width) * 4;
+        if (canvasImageData.data[index] > 10 )
+            map_mesh.geometry.vertices[i].setZ(-200);
+    }
     map_mesh.geometry.dynamic = true;
-  for (var i=0; i < map_mesh.geometry.vertices.length; i++) {
-      if (canvas.getImageData( map_mesh.geometry.vertices[i].x+this.width/2, map_mesh.geometry.vertices[i].y+this.height/2, 1,1).data[0]>0 )
-           map_mesh.geometry.vertices[i].setZ(-100);
-   }
-  map_mesh.geometry.verticesNeedUpdate = true;
-  return map_mesh;
+    map_mesh.geometry.verticesNeedUpdate = true;
+    return map_mesh;
 }
