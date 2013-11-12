@@ -4,12 +4,14 @@
 
 function generateCommonWall(scene, x1, z1, x2, z2, width, height)
 {
-    depth = Math.sqrt( (z2-z1)*(z2-z1) + (x2-x1)*(x2-x1) ); // dist between 2 points
-    rad = Math.acos(Math.abs(z2-z1)/depth);
+    var depth = Math.sqrt( (z2-z1)*(z2-z1) + (x2-x1)*(x2-x1) ); // dist between 2 points
+    var rad = Math.acos(Math.abs(z2-z1)/depth);
 
-    wall_mesh = generateCommonWallMesh(x1, 0, z1, width, height, depth);
+    var wall_mesh = generateCommonWallMesh(0, 0, 0, width, height, depth);
 
 	var axis = new THREE.Vector3(0,1,0);
 	wall_mesh.rotateOnAxis(axis, rad);
+	wall_mesh.position.x = x1;
+	wall_mesh.position.z = z1;
 	scene.add(wall_mesh);
 }
