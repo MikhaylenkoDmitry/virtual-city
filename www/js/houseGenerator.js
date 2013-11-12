@@ -48,7 +48,7 @@ function getSubBuildingLevel()
 
 function getHouseHeight(subBuildingLevel)
 {
-    return getRandomInt(200/(subBuildingLevel + 1), 500/(subBuildingLevel + 1));
+    return getRandomInt(10/(subBuildingLevel + 1), 25/(subBuildingLevel + 1));
 }
 
 function getHouseRoofRatio()
@@ -78,7 +78,7 @@ function generateBuildingToArray(subBuildingLevel, x, y, z, width, depth, angle)
     var floorHeight = height * (1 - roofRatio) / floorsCount;
 
     var baseMaterial = materialFactory.getMaterialByName('houseBasement');
-    var floorMaterial = materialFactory.getMaterialByName('houseFloor');
+    var floorMaterial = materialFactory.getMaterialByName('houseFloor' + getRandomInt(1, 2));
 
     if(subBuildingLevel > 0)
         baseMaterial = floorMaterial;
