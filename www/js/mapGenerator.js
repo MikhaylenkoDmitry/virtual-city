@@ -1,5 +1,5 @@
 
-this.BUILDINGS_COUNT = 50;
+this.BUILDINGS_COUNT = 500;
 this.width = 1000;
 this.height = 1000;
 this.segments = 128;
@@ -201,13 +201,13 @@ function placeStuff(scene){
     for (var i = 0; i< this.BUILDINGS_COUNT; i++ ){
         var x = getRandomInt(0,this.width)-this.width/2;
         var y = getRandomInt(0,this.height) - this.height/2;
-        var index = (x + y * canvasImageData.width) * 4;
+        var index = (x+this.width/2 + (y+this.width/2) * canvasImageData.width) * 4;
 
         if (canvasImageData.data[index]>0){
-            i-=0;
+            i-=1;
             continue;
         }  else{
-        generateBuilding(scene, y, 0,x , 10, 10, Math.random()*Math.PI);
+        generateBuilding(scene, x, +1,-y , 10, 10, Math.random()*Math.PI);
         }
 
     }
@@ -223,7 +223,7 @@ function placeStuff(scene){
     }
     for (; x > -this.width/2; x -= 10){
        //     generateCommonWall(scene, x, y, x+10, y, 10, 20);
-         //   generateCommonWall(scene, x, y, x+1 , y+10, 10, 20);
+        //    generateCommonWall(scene, x, y, x , y+10, 10, 20);
     }
     for (; y >- this.width/2; y -= 10){
                     generateCommonWall(scene, x, y, x+10, y, 10, 20);
