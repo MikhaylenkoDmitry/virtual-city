@@ -11,7 +11,7 @@ function generateCommonWallMesh(x, y, z, width, height, depth)
     var WIDTH_RATIO = 4;
 
     addCube(geometry, x, y, z, width, height, depth); //main parallelepiped
-
+    addCube(geometry, x, y-height, z, width, height, depth); //low parallelepiped
     addCube(geometry, x-LEDGE_RATIO, y+height, z, width/WIDTH_RATIO, height/HEIGHT_RATIO, depth); // left platform
     scaleGeomUVForLastFaces(geometry,  1, 1/HEIGHT_RATIO, 12);
 

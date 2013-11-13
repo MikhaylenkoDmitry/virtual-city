@@ -4,7 +4,6 @@
 
 function generateCommonWall(scene, x1, z1, x2, z2, width, height)
 {
-    height += 10;
     var depth = Math.sqrt( (z2-z1)*(z2-z1) + (x2-x1)*(x2-x1) ); // dist between 2 points
     var rad = Math.asin((x2-x1)/depth);
     var rad_c = Math.acos((z2-z1)/depth);
@@ -13,7 +12,7 @@ function generateCommonWall(scene, x1, z1, x2, z2, width, height)
     else
         rad = rad_c;
 
-    var wall_mesh = generateCommonWallMesh(0, -10, 0, width, height, depth);
+    var wall_mesh = generateCommonWallMesh(0, 0, 0, width, height, depth);
 
 //	var axis = new THREE.Vector3(0,1,0);
 //	wall_mesh.rotateOnAxis(axis, rad);

@@ -3,7 +3,7 @@ this.BUILDINGS_COUNT = 500;
 this.width = 1000;
 this.height = 1000;
 this.segments = 256;
-this.smoothingFactor  = 80;
+this.smoothingFactor  = 40;
 this.river_canvas;
 this.high_map = new Array();
 this.house_coords = new Array();
@@ -363,18 +363,31 @@ function placeStuff(scene){
     var zm_angle = Math.random()*Math.PI;
     giveMeTheTower(scene,zm_x_0,0,zm_y_0,zm_size,zm_size*2,zm_size, zm_angle);
     this.house_coords.push(new THREE.Vector3(zm_x_0,0,zm_y_0));
-    //городская стена
-    cityWall(zm_x_0, zm_y_0, 700);
 
-    //giveMeTheTower(scene,zm_x_0, 0, zm_y_0 , zm_size, zm_size, zm_angle);
+    //центр города
+    zm_x_0 = zm_x_0+Math.sin(zm_angle+Math.PI/4)*zm_size/Math.sqrt(2);
+    zm_y_0 = zm_y_0+Math.cos(zm_angle+Math.PI/4)*zm_size/Math.sqrt(2);
+
+    //городская стена
+    var city_radius = 600;
+    cityWall(zm_x_0, zm_y_0, city_radius);
+
     //здания
+    this.BUILDINGS_COUNT = 500;
     var min_h = 100;
     var max_h = -100;
     for (var i = 0; i< this.BUILDINGS_COUNT; i++ ){
+
         var x = getRandomInt(10,this.width-10)-this.width/2;
         var y = getRandomInt(10,this.height-10) - this.height/2;
         var index = xyindex(x,y, this.width);
+        var dist2center = Math.sqrt((zm_x_0 - x)*(zm_x_0 - x)+ (zm_y_0 - y)*(zm_y_0 - y));
+        if ( dist2center < 2*zm_size || dist2center > city_radius-50 )
+        {
+            i--;
+            continue;
 
+        }
         if (canvasImageData.data[index]>0){
             i-=1;
             continue;
