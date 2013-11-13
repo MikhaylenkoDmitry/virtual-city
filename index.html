@@ -3,6 +3,7 @@
 <script src="js/three.min.js"></script>
 <script src="js/geometryHelper.js"></script>
 <script src="js/skyBox.js"></script>
+<script src="js/fillers.js"></script>
 <script src="js/roadGenerator.js"></script>
 <script src="js/basicBuildingGenerator.js"></script>
 <script src="js/basicWallGenerator.js"></script>
@@ -98,6 +99,7 @@
 
     function initscene(){
     	scene.add(getSkyboxMesh());
+    	addFillersStuff(scene);
         map_meshes = generateMap();
         placeStuff(scene);
         addRoads(map_meshes[0], this.house_coords);
