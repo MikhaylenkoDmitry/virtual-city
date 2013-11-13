@@ -6,9 +6,9 @@ function generateCommonWallMesh(x, y, z, width, height, depth)
 {
     var geometry = new THREE.Geometry();
 
-    HEIGHT_RATIO = 8;
-    LEDGE_RATIO = width/7;
-    WIDTH_RATIO = 4;
+    var HEIGHT_RATIO = 8;
+    var LEDGE_RATIO = width/7;
+    var WIDTH_RATIO = 4;
 
     addCube(geometry, x, y, z, width, height, depth); //main parallelepiped
 
