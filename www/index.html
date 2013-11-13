@@ -2,6 +2,7 @@
 <body>
 <script src="js/three.min.js"></script>
 <script src="js/geometryHelper.js"></script>
+<script src="js/skyBox.js"></script>
 <script src="js/basicBuildingGenerator.js"></script>
 <script src="js/basicWallGenerator.js"></script>
 <script src="js/basicTowerGenerator.js"></script>
@@ -16,7 +17,7 @@
     var lastTime = 0, control;
     var testtexture1;
 
-    var textureNames = [['grass', 'grass2.jpg'], ['testtexture1','testtexture1.png'], ['sky_box', 'sky_box.jpg'], ['water','water.jpg'], ['chimney', 'houseChimney.jpg'], ['houseBasement', 'houseBasement.jpg'], ['houseFloor1', 'houseFloor1.jpg'], ['houseFloor2', 'houseFloor2.jpg'], ['firstFloor', 'houseFirstFloor.jpg'],['wall1','wall1.jpg'],['wall2','wall2.jpg']];
+    var textureNames = [['grass', 'grass2.jpg'], ['testtexture1','testtexture1.png'], ['sky_box', 'sky_box.jpg'], ['sky_box2', 'sky_box2.jpg'], ['water','water.jpg'], ['chimney', 'houseChimney.jpg'], ['houseBasement', 'houseBasement.jpg'], ['houseFloor1', 'houseFloor1.jpg'], ['houseFloor2', 'houseFloor2.jpg'], ['firstFloor', 'houseFirstFloor.jpg'],['wall1','wall1.jpg'],['wall2','wall2.jpg']];
 
 	var materialFactory = {};
 
@@ -62,7 +63,7 @@
 
     function init() {
 
-        camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
+        camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 500000 );
         camera.position.x = -100;
         camera.position.y = 150;
         camera.position.z = 20;
@@ -83,11 +84,13 @@
     }
 
     function initscene(){
+    	scene.add(getSkyboxMesh());
         map_meshes = generateMap();
         scene.add(map_meshes[0]);
         scene.add(map_meshes[1]);
         placeStuff(scene);
         giveMeTheTower(scene,100,0,30,40,50,40, Math.PI/2);
+		generateCommonWall(scene, 0, 0, 100, 500, 10, 30);
     }
 
     function animate() {
