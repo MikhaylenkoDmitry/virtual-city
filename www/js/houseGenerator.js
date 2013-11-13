@@ -48,7 +48,7 @@ function getSubBuildingLevel()
 
 function getHouseHeight(subBuildingLevel)
 {
-    return getRandomInt(10/(subBuildingLevel + 1), 25/(subBuildingLevel + 1));
+    return getRandomNumber(10/(subBuildingLevel + 1), 25/(subBuildingLevel + 1));
 }
 
 function getHouseRoofRatio()
@@ -120,7 +120,7 @@ function generateBuildingToArray(subBuildingLevel, x, y, z, width, depth, angle)
 
 function generateBuilding(scene, x, y, z, width, depth, angle)
 {
-    var array = generateBuildingToArray(0, x, y, z, width, depth,100, angle);
+    var array = generateBuildingToArray(0, x, y, z, width, depth, angle);
 
     for(var i = 0; i < array.length; i++)
         scene.add(array[i]);
