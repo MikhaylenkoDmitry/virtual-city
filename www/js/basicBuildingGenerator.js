@@ -27,7 +27,7 @@ function generateBarnMesh(x, y, z, width, height, depth, roofHeightRatio, baseWi
 
     if(isBase)
     {
-        result.push(getCubeMesh(x + width * (1 - baseWidthRatio)/2, y - 100, z, width * baseWidthRatio, 100, depth, baseMaterial));
+        result.push(getCubeMesh(x + width * (1 - baseWidthRatio)/2, y - 10, z, width * baseWidthRatio, 10, depth, baseMaterial));
     }
 
     // Floors
