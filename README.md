@@ -3,7 +3,7 @@
 
 Contributors:
 
-Afanasyev Anton, Bubnov Nikita, Mihaschenko Dmitriy, Kalakuckiy Arkadiy
+Afanasyev Anton, Bubnov Nikita, Mikhaylenko Dmitriy, Kalakuckiy Arkadiy
 
 ======
 
