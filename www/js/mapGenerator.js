@@ -6,8 +6,7 @@ this.segments = 256;
 this.smoothingFactor  = 40;
 this.river_canvas;
 this.high_map = new Array();
-this.house_coords = new Array();
-this.house_coords.idx = 0;
+this.house_coords = [];
 function getRandomInt(min, max)
 {
     if (!max){
@@ -120,8 +119,6 @@ function generateMap() {
 
     houseCoords = [];
     houseCoords.push(THREE.Vector2(100, 100));
-
-    addRoads(mesh, houseCoords);
 
     return mesh_and_river;
 }
@@ -356,18 +353,21 @@ function placeStuff(scene){
     canvasImageData = canvas.getImageData(0, 0, this.width, this.height);
     //замок
 
-    var zm_size = 40;
+    var zm_size = 20;
     zm = placeCastle(zm_size,this.river_canvas.river_width );
     var zm_x_0 = zm[0];
     var zm_y_0 = zm[1];
     var zm_angle = Math.random()*Math.PI;
-    giveMeTheTower(scene,zm_x_0,0,zm_y_0,zm_size,zm_size*2,zm_size, zm_angle);
-    this.house_coords.push(new THREE.Vector3(zm_x_0,0,zm_y_0));
+    //giveMeTheTower(scene,zm_x_0,0,zm_y_0,zm_size,zm_size*2,zm_size, zm_angle);
+    giveMeTheCastle(scene,zm_x_0,0,zm_y_0,zm_size,zm_size*2,zm_size, zm_angle);
+
 
     //центр города
     zm_x_0 = zm_x_0+Math.sin(zm_angle+Math.PI/4)*zm_size/Math.sqrt(2);
     zm_y_0 = zm_y_0+Math.cos(zm_angle+Math.PI/4)*zm_size/Math.sqrt(2);
+    this.house_coords.push(new THREE.Vector3(zm_x_0,-zm_y_0,200));
 
+    zm_size*=3.5;
     //городская стена
     var city_radius = 600;
     cityWall(zm_x_0, zm_y_0, city_radius);
@@ -397,7 +397,7 @@ function placeStuff(scene){
             if (z< min_h) min_h = z;
 
             generateBuilding(scene, x,z,y , 10, 10, Math.random()*Math.PI);
-            this.house_coords.push( new THREE.Vector3(x,z,y));
+            this.house_coords.push( new THREE.Vector3(x,-y,30));
         }
 
     }
