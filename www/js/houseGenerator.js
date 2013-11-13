@@ -120,7 +120,7 @@ function generateBuildingToArray(subBuildingLevel, x, y, z, width, depth, angle)
 
 function generateBuilding(scene, x, y, z, width, depth, angle)
 {
-    var array = generateBuildingToArray(0, x, y, z, width, depth, angle);
+    var array = generateBuildingToArray(0, x, y, z, width, depth,100, angle);
 
     for(var i = 0; i < array.length; i++)
         scene.add(array[i]);

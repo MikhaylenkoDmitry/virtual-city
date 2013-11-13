@@ -135,7 +135,8 @@ function generateRiver(  map_mesh){
     canvas.rect(0,0,this.width,this.height);
     canvas.fillStyle = "black";
     canvas.fill;
-    canvas.lineWidth=this.width/10|0; //ширина реки
+    this.river_canvas.river_width = this.width/10|0;
+    canvas.lineWidth = this.river_canvas.river_width; //ширина реки
     canvas.beginPath();
     canvas.moveTo(0,0);
     this.river_canvas.x_0 = 0;
@@ -208,8 +209,9 @@ function generateRiver(  map_mesh){
     return [map_mesh, geom];
 
 }
-function placeCastle(){
-    var r = 500;
+function placeCastle(castle_size, river_width){
+    var r = this.width/2;
+    var r2 = castle_size+river_width;
     var context =  this.river_canvas.getContext("2d");
     var img_data = context.getImageData(0, 0, this.width, this.width);
     var powers = new Array();
@@ -237,7 +239,7 @@ function placeCastle(){
     for (var x = 0; x < this.width; x +=30){
         for (var y = 0; y < this.width; y+=30){
             if (img_data.data[xyindex(x-this.width/2,y-this.width/2,this.width)]>0){
-                increase(powers,x,y,r,70);
+                increase(powers,x,y,r,r2);
 
             }
         }
@@ -254,18 +256,70 @@ function placeCastle(){
     }
     return [max_x-this.width/2, max_y-this.width/2];
 }
+
+function cityWall(X1, Y1, R){
+
+   var x = 0;
+   var y = R;
+   var delta = 1 - 2 * R;
+   var mltpl = 1;
+   var error = 0;
+   var p_x;
+   var p_y;
+   var frst = 0;
+   while (y >= 0) {
+        if (frst == 0){
+              p_x = x;
+              p_y = y;
+        }
+        if (frst > 50){
+            generateCommonWall(scene, X1 + x*mltpl, Y1 + y*mltpl,  X1 + p_x*mltpl ,Y1 + p_y*mltpl , 20, 20);
+            generateCommonWall(scene, X1 - x*mltpl, Y1 + y*mltpl,  X1 - p_x*mltpl ,Y1 + p_y*mltpl , 20, 20);
+            generateCommonWall(scene, X1 - x*mltpl, Y1 - y*mltpl,  X1 - p_x*mltpl ,Y1 - p_y*mltpl , 20, 20);
+            generateCommonWall(scene, X1 + x*mltpl, Y1 - y*mltpl,  X1 + p_x*mltpl ,Y1 - p_y*mltpl , 20, 20);
+            frst = 1;
+           p_x = x;
+           p_y = y;
+        }
+        frst ++;
+
+
+       error = 2 * (delta + y) - 1;
+       if ((delta < 0) && (error <= 0)){
+           delta += 2 * ++x + 1;
+           continue;
+       }
+       error = 2 * (delta - x) - 1;
+       if ((delta > 0) && (error > 0)){
+           delta += 1 - 2 * --y;
+           continue;
+       }
+       x+=1;
+       delta += 2 * (x - y);
+       y-=1;
+   }
+}
+
+
 function placeStuff(scene){
 
     canvas = this.river_canvas.getContext("2d");
     canvasImageData = canvas.getImageData(0, 0, this.width, this.height);
     //замок
-    zm = placeCastle();
+
+    var zm_size = 40;
+    zm = placeCastle(zm_size,this.river_canvas.river_width );
     var zm_x_0 = zm[0];
     var zm_y_0 = zm[1];
-    var zm_size = 40;
     var zm_angle = Math.random()*Math.PI;
-    generateBuilding(scene, zm_x_0, 0, zm_y_0 , zm_size, zm_size, zm_angle);
+    giveMeTheTower(scene,zm_x_0,0,zm_y_0,zm_size,zm_size*2,zm_size, zm_angle);
+
+    //городская стена
+    cityWall(zm_x_0, zm_y_0, 700);
+
+    //giveMeTheTower(scene,zm_x_0, 0, zm_y_0 , zm_size, zm_size, zm_angle);
     //здания
+    /*
     for (var i = 0; i< this.BUILDINGS_COUNT; i++ ){
         var x = getRandomInt(0,this.width)-this.width/2;
         var y = getRandomInt(0,this.height) - this.height/2;
@@ -275,11 +329,11 @@ function placeStuff(scene){
             i-=1;
             continue;
         }  else{
-            generateBuilding(scene, x, -+3,y , 10, 10, Math.random()*Math.PI);
+            generateBuilding(scene, x, -3,y , 10, 10, Math.random()*Math.PI);
         }
 
     }
-
+    */
     var x= -this.width/2;
     var y = -this.width/2;
     for (; x < this.width/2; x += 10){
@@ -293,6 +347,6 @@ function placeStuff(scene){
             generateCommonWall(scene, x, y, x+10, y, 10, 20);
     }
     for (; y >- this.width/2; y -= 10){
-                    generateCommonWall(scene, x, y, x, y+10, 10, 20);
+        generateCommonWall(scene, x, y, x, y+10, 10, 20);
         }
 }
