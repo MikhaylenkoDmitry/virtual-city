@@ -11,6 +11,7 @@ function generateCommonWall(scene, x1, z1, x2, z2, width, height)
         rad = -rad_c;
     else
         rad = rad_c;
+
     var wall_mesh = generateCommonWallMesh(0, 0, 0, width, height, depth);
 
 //	var axis = new THREE.Vector3(0,1,0);
