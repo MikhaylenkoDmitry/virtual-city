@@ -6,8 +6,7 @@ this.segments = 256;
 this.smoothingFactor  = 40;
 this.river_canvas;
 this.high_map = new Array();
-this.house_coords = new Array();
-this.house_coords.idx = 0;
+this.house_coords = [];
 function getRandomInt(min, max)
 {
     if (!max){
@@ -120,8 +119,6 @@ function generateMap() {
 
     houseCoords = [];
     houseCoords.push(THREE.Vector2(100, 100));
-
-    addRoads(mesh, houseCoords);
 
     return mesh_and_river;
 }
@@ -362,11 +359,12 @@ function placeStuff(scene){
     var zm_y_0 = zm[1];
     var zm_angle = Math.random()*Math.PI;
     giveMeTheTower(scene,zm_x_0,0,zm_y_0,zm_size,zm_size*2,zm_size, zm_angle);
-    this.house_coords.push(new THREE.Vector3(zm_x_0,0,zm_y_0));
 
     //центр города
     zm_x_0 = zm_x_0+Math.sin(zm_angle+Math.PI/4)*zm_size/Math.sqrt(2);
     zm_y_0 = zm_y_0+Math.cos(zm_angle+Math.PI/4)*zm_size/Math.sqrt(2);
+    this.house_coords.push(new THREE.Vector3(zm_x_0,-zm_y_0,100));
+
 
     //городская стена
     var city_radius = 600;
@@ -397,7 +395,7 @@ function placeStuff(scene){
             if (z< min_h) min_h = z;
 
             generateBuilding(scene, x,z,y , 10, 10, Math.random()*Math.PI);
-            this.house_coords.push( new THREE.Vector3(x,z,y));
+            this.house_coords.push( new THREE.Vector3(x,-y,30));
         }
 
     }

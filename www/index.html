@@ -18,7 +18,7 @@
     var lastTime = 0, control;
     var testtexture1;
 
-    var textureNames = [['grass', 'grass.jpg'], ['testtexture1','testtexture1.png'], ['sky_box', 'sky_box.jpg'], ['sky_box2', 'sky_box3.jpg'], ['water','water.jpg'], ['chimney', 'houseChimney.jpg'], ['houseBasement', 'houseBasement.jpg'], ['houseFloor1', 'houseFloor1.jpg'], ['houseFloor2', 'houseFloor2.jpg'], ['firstFloor', 'houseFirstFloor.jpg'],['wall1','wall1.jpg'],['wall2','wall2.jpg']];
+    var textureNames = [['grass', 'grass.jpg'], ['testtexture1','testtexture1.png'], ['sky_box', 'sky_box.jpg'], ['sky_box2', 'sky_box3.jpg'], ['water','water.jpg'], ['chimney', 'houseChimney.jpg'], ['houseBasement', 'houseBasement.jpg'], ['houseFloor1', 'houseFloor1.jpg'], ['houseFloor2', 'houseFloor2.jpg'], ['firstFloor', 'houseFirstFloor.jpg'],['wall1','wall1.jpg'],['wall2','wall2.jpg'], ['block','block.jpg']];
 
 	var materialFactory = {};
 
@@ -34,10 +34,14 @@
 				this.textures[i].anisotropy  = renderer.getMaxAnisotropy();
 				this.textures[i].wrapS = this.textures[i].wrapT = THREE.RepeatWrapping;
 				this.textures[i].repeat.set(12, 12);
-				this.materials[i] = new THREE.MeshBasicMaterial({map: this.textures[i]});
-			} else {
-				this.materials[i] = new THREE.MeshBasicMaterial({map: this.textures[i]});
 			}
+			if(textureNames[i][0] == 'block')
+			{
+				this.textures[i].anisotropy  = renderer.getMaxAnisotropy();
+				this.textures[i].wrapS = this.textures[i].wrapT = THREE.RepeatWrapping;
+				this.textures[i].repeat.set(20, 20);
+			}
+			this.materials[i] = new THREE.MeshBasicMaterial({map: this.textures[i]});
 		}
 
 		initscene();
@@ -87,9 +91,10 @@
     function initscene(){
     	scene.add(getSkyboxMesh());
         map_meshes = generateMap();
+        placeStuff(scene);
+        addRoads(map_meshes[0], this.house_coords);
         scene.add(map_meshes[0]);
         scene.add(map_meshes[1]);
-        placeStuff(scene);
 
     }
 
