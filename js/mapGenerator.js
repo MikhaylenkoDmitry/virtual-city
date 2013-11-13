@@ -353,7 +353,7 @@ function placeStuff(scene){
     canvasImageData = canvas.getImageData(0, 0, this.width, this.height);
     //замок
 
-    var zm_size = 60;
+    var zm_size = 80;
     zm = placeCastle(zm_size+10,this.river_canvas.river_width );
     var zm_x_0 = zm[0];
     var zm_y_0 = zm[1];
@@ -397,7 +397,7 @@ function placeStuff(scene){
             if (z< min_h) min_h = z;
 
             generateBuilding(scene, x,z,y , 10, 10, Math.random()*Math.PI);
-            this.house_coords.push( new THREE.Vector3(x,-y,30));
+            this.house_coords.push( new THREE.Vector3(x,-y,22));
         }
 
     }

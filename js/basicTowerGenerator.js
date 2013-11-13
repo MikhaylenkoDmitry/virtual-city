@@ -16,9 +16,9 @@ function generateTowerMesh(x, y, z, width, height, depth)
     addCube(geometry, x+width/5-width/10, y+height, z-width/10, width-width/5, height/HEIGHT_RATIO, width/5);
 	scaleGeomUVForLastFaces(geometry,  1, 1/HEIGHT_RATIO, 12);
 
-	//up wall    
+	//up wall
 	addCube(geometry, x+width/5, y, z+depth-width/5, width-2*width/5, height, width/5);
-	//up wall platform 
+	//up wall platform
 	addCube(geometry, x+width/5-width/10, y+height, z+depth-width/5+width/10, width-width/5, height/HEIGHT_RATIO, width/5);
     scaleGeomUVForLastFaces(geometry,  1, 1/HEIGHT_RATIO, 12);
 
@@ -41,50 +41,45 @@ function generateTowerMesh(x, y, z, width, height, depth)
 
     var cntr1 = 18;
     for(var i=0; i<cntr1; i+=3){
-		addCube(geometry, 
-				x-width/10, 
-				y+height+height/HEIGHT_RATIO, 
-				z-width/10+i*width/14, 
-				crennelWidth, 
-				crennelHeight, 
+		addCube(geometry,
+				x-width/10,
+				y+height+height/HEIGHT_RATIO,
+				z-width/10+i*width/14,
+				crennelWidth,
+				crennelHeight,
 				crennelDepth);
 		scaleGeomUVForLastFaces(geometry, 1/14, 1/HEIGHT_RATIO, 12);
 
-		addCube(geometry, 
-				x-width/10+depth+width/10, 
-				y+height+height/HEIGHT_RATIO, 
-				z-width/10+i*width/14, 
-				crennelWidth, 
-				crennelHeight, 
+		addCube(geometry,
+				x-width/10+depth+width/10,
+				y+height+height/HEIGHT_RATIO,
+				z-width/10+i*width/14,
+				crennelWidth,
+				crennelHeight,
 				crennelDepth);
 		scaleGeomUVForLastFaces(geometry, 1/14, 1/HEIGHT_RATIO, 12);
 	}
- 	var cntr2 = 9; 
+ 	var cntr2 = 9;
     for(var i=0; i < cntr2; i+=3){
-		addCube(geometry, 
-				x-width/10+width/5+i*width/9, 
-				y+height+height/HEIGHT_RATIO, 
-				z+depth, 
-				crennelDepth, 
-				crennelHeight, 
+		addCube(geometry,
+				x-width/10+width/5+i*width/9,
+				y+height+height/HEIGHT_RATIO,
+				z+depth,
+				crennelDepth,
+				crennelHeight,
 				crennelWidth);
 		scaleGeomUVForLastFaces(geometry, 1/9, 1/HEIGHT_RATIO, 12);
 
-		addCube(geometry, 
-				x-width/10+width/5+i*width/9, 
-				y+height+height/HEIGHT_RATIO, 
-				z-width/10, 
-				crennelDepth, 
-				crennelHeight, 
+		addCube(geometry,
+				x-width/10+width/5+i*width/9,
+				y+height+height/HEIGHT_RATIO,
+				z-width/10,
+				crennelDepth,
+				crennelHeight,
 				crennelWidth);
 		scaleGeomUVForLastFaces(geometry, 1/9, 1/HEIGHT_RATIO, 12);
 
 	}
 
-	var texture = materialFactory.getTextureByName('wall2');
-	texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-	texture.repeat.set(8, 8);
-	var material = new THREE.MeshBasicMaterial({map: texture});
-
-    return new THREE.Mesh(geometry, material);
+    return new THREE.Mesh(geometry, materialFactory.getMaterialByName('wall'));
 }

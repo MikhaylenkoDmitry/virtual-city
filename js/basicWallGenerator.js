@@ -31,10 +31,5 @@ function generateCommonWallMesh(x, y, z, width, height, depth)
     	scaleGeomUVForLastFaces(geometry, 1/crenellsCount, 1/HEIGHT_RATIO, 12);
     }
 
-	var texture = materialFactory.getTextureByName('wall2');
-	texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-	texture.repeat.set(8, 8);
-	var material = new THREE.MeshBasicMaterial({map: texture});
-
-    return new THREE.Mesh( geometry, material );
+    return new THREE.Mesh( geometry, materialFactory.getMaterialByName('wall') );
 }
