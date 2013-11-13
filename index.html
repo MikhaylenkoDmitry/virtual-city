@@ -1,5 +1,6 @@
 <html>
 <body>
+	<div id = 'loading'>We are really sorry you have to wait for this to load (it takes about 30 seconds on average laptop)</div>
 <script src="js/three.min.js"></script>
 <script src="js/geometryHelper.js"></script>
 <script src="js/skyBox.js"></script>
@@ -86,6 +87,7 @@
     animate();
 
     function init() {
+    	loadingDiv = document.getElementById('loading');
 
         camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 500000 );
         camera.position.x = -100;
@@ -115,6 +117,9 @@
         scene.add(map_meshes[0]);
         scene.add(map_meshes[1]);
     	addFillersStuff(scene);
+
+    	loadingDiv = document.getElementById('loading');
+    	loadingDiv.parentNode.removeChild(loadingDiv);
     }
 
     function animate() {
