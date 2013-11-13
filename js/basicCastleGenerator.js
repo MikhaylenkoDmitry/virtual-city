@@ -82,10 +82,10 @@ function generateCastleObject3d(x, y, z, width, height, depth)
 	var WIDTH_SCALE = 1.5;
 	var HEIGHT_SCALE = 1.5;
 
-	var center_up_tower = generateTowerMesh(x, y, z+width+(depth*3)/4,  WIDTH_SCALE*width, HEIGHT_SCALE*height, DEPTH_SCALE*depth);
+	var center_up_tower = generateTowerMesh(x, -5, z+width+(depth*3)/4,  WIDTH_SCALE*width, HEIGHT_SCALE*height, DEPTH_SCALE*depth);
 	group.add(center_up_tower);
 
-	var center_down_tower = generateTowerMesh(x+tower_distance, y, z+width+(depth*3)/4, WIDTH_SCALE*width, HEIGHT_SCALE*height, DEPTH_SCALE*depth);
+	var center_down_tower = generateTowerMesh(x+tower_distance, -5, z+width+(depth*3)/4, WIDTH_SCALE*width, HEIGHT_SCALE*height, DEPTH_SCALE*depth);
 	group.add(center_down_tower);
 
 	var center_up_tower_upper = generateTowerMesh(x+DEPTH_SCALE*depth/4,

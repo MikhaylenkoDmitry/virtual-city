@@ -6,6 +6,7 @@ this.smoothingFactor  = 40;
 this.river_canvas;
 this.high_map = new Array();
 this.house_coords = [];
+
 function getRandomInt(min, max)
 {
     if (!max){
