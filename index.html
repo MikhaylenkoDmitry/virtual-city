@@ -1,0 +1,114 @@
+<html>
+<body>
+<script src="js/three.min.js"></script>
+<script src="js/geometryHelper.js"></script>
+<script src="js/skyBox.js"></script>
+<script src="js/roadGenerator.js"></script>
+<script src="js/basicBuildingGenerator.js"></script>
+<script src="js/basicWallGenerator.js"></script>
+<script src="js/basicTowerGenerator.js"></script>
+<script src="js/basicCastleGenerator.js"></script>
+<script src="js/castleGenerator.js"></script>
+<script src="js/towerGenerator.js"></script>
+<script src="js/wallGenerator.js"></script>
+<script src="js/houseGenerator.js"></script>
+<script src="js/mapGenerator.js"></script>
+<script src="js/FirstPersonControls.js"></script>
+<script>
+
+    var camera, scene, renderer;
+    var lastTime = 0, control;
+    var testtexture1;
+
+    var textureNames = [['grass', 'grass.jpg'], ['testtexture1','testtexture1.png'], ['sky_box', 'sky_box.jpg'], ['sky_box2', 'sky_box3.jpg'], ['water','water.jpg'], ['chimney', 'houseChimney.jpg'], ['houseBasement', 'houseBasement.jpg'], ['houseFloor1', 'houseFloor1.jpg'], ['houseFloor2', 'houseFloor2.jpg'], ['firstFloor', 'houseFirstFloor.jpg'],['wall1','wall1.jpg'],['wall2','wall2.jpg'], ['block','block.jpg']];
+
+	var materialFactory = {};
+
+	materialFactory.loadTextures = function(){
+		this.textures = [];
+		for(i=0; i<textureNames.length; i++){
+			this.textures.push( THREE.ImageUtils.loadTexture('images/textures/'+textureNames[i][1]) );
+		}
+
+		this.materials = [];
+		for(i=0; i<textureNames.length; i++){
+			if(textureNames[i][0] == 'grass'){
+				this.textures[i].anisotropy  = renderer.getMaxAnisotropy();
+				this.textures[i].wrapS = this.textures[i].wrapT = THREE.RepeatWrapping;
+				this.textures[i].repeat.set(12, 12);
+			}
+			if(textureNames[i][0] == 'block')
+			{
+				this.textures[i].anisotropy  = renderer.getMaxAnisotropy();
+				this.textures[i].wrapS = this.textures[i].wrapT = THREE.RepeatWrapping;
+				this.textures[i].repeat.set(20, 20);
+			}
+			this.materials[i] = new THREE.MeshBasicMaterial({map: this.textures[i]});
+		}
+
+		initscene();
+	}
+
+    materialFactory.getMaterialByName = function(name){
+    	for(i=0; i<textureNames.length; i++){
+    		if( name == textureNames[i][0] ){
+    			return this.materials[i];
+    		}
+    	}
+    }
+
+    materialFactory.getTextureByName = function(name){
+    	for(i=0; i<textureNames.length; i++){
+    		if (name == textureNames[i][0]){
+    			return this.textures[i];
+    		}
+    	}
+    }
+
+    init();
+    animate();
+
+    function init() {
+
+        camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 500000 );
+        camera.position.x = -100;
+        camera.position.y = 150;
+        camera.position.z = 20;
+
+		controls = new THREE.FirstPersonControls( camera );
+		controls.movementSpeed = 100;
+		controls.lookSpeed = 0.10;
+		controls.lookVertical = true;
+
+        scene = new THREE.Scene();
+
+        renderer = new THREE.WebGLRenderer();
+        renderer.setSize( window.innerWidth, window.innerHeight );
+
+        document.body.appendChild( renderer.domElement );
+
+        materialFactory.loadTextures();
+    }
+
+    function initscene(){
+    	scene.add(getSkyboxMesh());
+        map_meshes = generateMap();
+        placeStuff(scene);
+        addRoads(map_meshes[0], this.house_coords);
+        scene.add(map_meshes[0]);
+        scene.add(map_meshes[1]);
+    }
+
+    function animate() {
+        requestAnimationFrame( animate );
+		var time = performance.now() / 1000;
+
+		controls.update( time - lastTime );
+		renderer.render( scene, camera );
+
+		lastTime = time;
+    }
+
+</script>
+
+</body></html>
