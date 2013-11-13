@@ -89,7 +89,7 @@
         scene = new THREE.Scene();
 
         renderer = new THREE.WebGLRenderer();
-        renderer.setSize( window.innerWidth, window.innerHeight );
+        renderer.setSize( window.innerWidth-30, window.innerHeight-30 );
 
         document.body.appendChild( renderer.domElement );
 
@@ -110,6 +110,13 @@
 		var time = performance.now() / 1000;
 
 		controls.update( time - lastTime );
+
+		if(camera.position.y < 10){camera.position.y = 10;}
+		if(camera.position.x > 500){camera.position.x = 500;}
+		if(camera.position.x < -500){camera.position.x = -500;}
+		if(camera.position.z > 500){camera.position.z = 500;}
+		if(camera.position.z < -500){camera.position.z = -500;}
+
 		renderer.render( scene, camera );
 
 		lastTime = time;

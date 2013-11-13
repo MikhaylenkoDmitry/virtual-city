@@ -198,7 +198,7 @@ function generateRiver(  map_mesh){
          //   new THREE.Vector2(1,0)
          //   ] );
         if (canvasImageData.data[index_a] > 0 && canvasImageData.data[index_b] > 0 && canvasImageData.data[index_c] > 0){
-                map_mesh.geometry.vertices[map_mesh.geometry.faces[i].c].setZ(-200);
+                map_mesh.geometry.vertices[map_mesh.geometry.faces[i].c].setZ(-20);
         } //else {
             if (map_mesh.geometry.vertices[map_mesh.geometry.faces[i].a].z<-10 ||
                 map_mesh.geometry.vertices[map_mesh.geometry.faces[i].b].z<-10 ||
