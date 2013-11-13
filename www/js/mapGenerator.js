@@ -353,19 +353,21 @@ function placeStuff(scene){
     canvasImageData = canvas.getImageData(0, 0, this.width, this.height);
     //замок
 
-    var zm_size = 40;
+    var zm_size = 20;
     zm = placeCastle(zm_size,this.river_canvas.river_width );
     var zm_x_0 = zm[0];
     var zm_y_0 = zm[1];
     var zm_angle = Math.random()*Math.PI;
-    giveMeTheTower(scene,zm_x_0,0,zm_y_0,zm_size,zm_size*2,zm_size, zm_angle);
+    //giveMeTheTower(scene,zm_x_0,0,zm_y_0,zm_size,zm_size*2,zm_size, zm_angle);
+    giveMeTheCastle(scene,zm_x_0,0,zm_y_0,zm_size,zm_size*2,zm_size, zm_angle);
+
 
     //центр города
     zm_x_0 = zm_x_0+Math.sin(zm_angle+Math.PI/4)*zm_size/Math.sqrt(2);
     zm_y_0 = zm_y_0+Math.cos(zm_angle+Math.PI/4)*zm_size/Math.sqrt(2);
-    this.house_coords.push(new THREE.Vector3(zm_x_0,-zm_y_0,100));
+    this.house_coords.push(new THREE.Vector3(zm_x_0,-zm_y_0,200));
 
-
+    zm_size*=3.5;
     //городская стена
     var city_radius = 600;
     cityWall(zm_x_0, zm_y_0, city_radius);
