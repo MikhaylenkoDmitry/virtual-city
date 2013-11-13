@@ -3,8 +3,9 @@ this.BUILDINGS_COUNT = 500;
 this.width = 1000;
 this.height = 1000;
 this.segments = 256;
-this.smoothingFactor  = 20;
+this.smoothingFactor  = 80;
 this.river_canvas;
+this.high_map = new Array();
 
 function getRandomInt(min, max)
 {
@@ -93,6 +94,12 @@ function generateMap() {
         i_y = (this.geometry.vertices[i].y+width/2|0)*(this.segments-1)/this.width|0;
         this.geometry.vertices[i].setZ(this.terrain[i_x][i_y]);
     }
+    for (var x = 0; x < this.width; x++){
+        this.high_map[x] = new Array();
+        for (var y =0; y < this.height; y++){
+            this.high_map[x][y] = this.terrain[x*(this.segments-1)/this.width|0][y*(this.segments-1)/this.width|0]
+        }
+    }
     /*
     var index = 0;
     for(var i = 0; i < this.segments; i++) {
@@ -131,14 +138,10 @@ function generateRiver(  map_mesh){
     this.river_canvas.height = this.height;
 
     canvas = this.river_canvas.getContext("2d");
-    canvas.strokeStyle = "red";
     canvas.rect(0,0,this.width,this.height);
     canvas.fillStyle = "black";
     canvas.fill;
     this.river_canvas.river_width = this.width/10|0;
-    canvas.lineWidth = this.river_canvas.river_width; //ширина реки
-    canvas.beginPath();
-    canvas.moveTo(0,0);
     this.river_canvas.x_0 = 0;
     this.river_canvas.y_0 = 0;
     this.river_canvas.x_1 = getRandomInt(100,this.width);
@@ -147,7 +150,19 @@ function generateRiver(  map_mesh){
     this.river_canvas.y_2 = getRandomInt(100,this.width);
     this.river_canvas.x_3 = this.width;
     this.river_canvas.y_3 = this.width;
-
+    canvas.lineWidth = this.river_canvas.river_width; //ширина реки
+    canvas.strokeStyle = "rgb(255,0,0)";
+    canvas.lineWidth += 20;
+    canvas.beginPath();
+    canvas.moveTo(0,0);
+    canvas.bezierCurveTo(   this.river_canvas.x_1,this.river_canvas.y_1,
+                                this.river_canvas.x_2,this.river_canvas.y_2,
+                                this.river_canvas.x_3,this.river_canvas.y_3);
+    canvas.stroke();
+    canvas.strokeStyle = "rgb(255,255,0)";
+    canvas.lineWidth -= 20;
+    canvas.beginPath();
+    canvas.moveTo(0,0);
     canvas.bezierCurveTo(   this.river_canvas.x_1,this.river_canvas.y_1,
                             this.river_canvas.x_2,this.river_canvas.y_2,
                             this.river_canvas.x_3,this.river_canvas.y_3);
@@ -165,11 +180,11 @@ function generateRiver(  map_mesh){
     }
     for (var i = 0; i < map_mesh.geometry.faces.length; i++){
 
-        index = xyindex(map_mesh.geometry.faces[i].centroid.x, -map_mesh.geometry.faces[i].centroid.y, this.width);
+        index = xyindex(map_mesh.geometry.faces[i].centroid.x, -map_mesh.geometry.faces[i].centroid.y, this.width)+1;
 
-        index_a = vertex_index2image_index(map_mesh.geometry.faces[i].a, map_mesh);
-        index_b = vertex_index2image_index(map_mesh.geometry.faces[i].b, map_mesh);
-        index_c = vertex_index2image_index(map_mesh.geometry.faces[i].c, map_mesh);
+        index_a = vertex_index2image_index(map_mesh.geometry.faces[i].a, map_mesh)+1;
+        index_b = vertex_index2image_index(map_mesh.geometry.faces[i].b, map_mesh)+1;
+        index_c = vertex_index2image_index(map_mesh.geometry.faces[i].c, map_mesh)+1;
 
         //if (canvasImageData.data[index] > 0 )        {
          //   geom.faces.push(map_mesh.geometry.faces[i]);
@@ -221,7 +236,7 @@ function placeCastle(castle_size, river_width){
             powers[x][y] = 0;
         }
     }
-    function increase(powers, x, y, r,r2){
+    function increase(powers, x, y, r,r2 ){
         var i = x - r/2;
         if (i<0) i =0;
         for ( ; i < x+r/2 && i < this.width; i++){
@@ -238,9 +253,8 @@ function placeCastle(castle_size, river_width){
     }
     for (var x = 0; x < this.width; x +=30){
         for (var y = 0; y < this.width; y+=30){
-            if (img_data.data[xyindex(x-this.width/2,y-this.width/2,this.width)]>0){
+            if (img_data.data[xyindex(x-this.width/2,y-this.width/2,this.width)+1]>0){
                 increase(powers,x,y,r,r2);
-
             }
         }
     }
@@ -347,21 +361,28 @@ function placeStuff(scene){
 
     //giveMeTheTower(scene,zm_x_0, 0, zm_y_0 , zm_size, zm_size, zm_angle);
     //здания
-    /*
+    var min_h = 100;
+    var max_h = -100;
     for (var i = 0; i< this.BUILDINGS_COUNT; i++ ){
-        var x = getRandomInt(0,this.width)-this.width/2;
-        var y = getRandomInt(0,this.height) - this.height/2;
+        var x = getRandomInt(10,this.width-10)-this.width/2;
+        var y = getRandomInt(10,this.height-10) - this.height/2;
         var index = xyindex(x,y, this.width);
 
         if (canvasImageData.data[index]>0){
             i-=1;
             continue;
         }  else{
-            generateBuilding(scene, x, -3,y , 10, 10, Math.random()*Math.PI);
+            z =  this.high_map[x+this.width/2][-y+this.width/2];
+            if (z > max_h) max_h = z;
+            if (z< min_h) min_h = z;
+
+            generateBuilding(scene, x,z,y , 10, 10, Math.random()*Math.PI);
         }
 
     }
-    */
+    alert(min_h);
+    alert(max_h);
+
     /*
     var x= -this.width/2;
     var y = -this.width/2;
