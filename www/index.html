@@ -7,6 +7,8 @@
 <script src="js/basicBuildingGenerator.js"></script>
 <script src="js/basicWallGenerator.js"></script>
 <script src="js/basicTowerGenerator.js"></script>
+<script src="js/basicCastleGenerator.js"></script>
+<script src="js/castleGenerator.js"></script>
 <script src="js/towerGenerator.js"></script>
 <script src="js/wallGenerator.js"></script>
 <script src="js/houseGenerator.js"></script>
@@ -95,6 +97,7 @@
         addRoads(map_meshes[0], this.house_coords);
         scene.add(map_meshes[0]);
         scene.add(map_meshes[1]);
+        giveMeTheCastle(scene,0, 0, 0, 100, 100, 100, 0);
 
     }
 
