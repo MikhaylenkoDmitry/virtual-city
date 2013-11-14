@@ -3,7 +3,7 @@
 
 Contributors:
 
-Afanasev Anton, Bubnov Nikita, Mikhaylenko Dmitry, Kalakucky Arkady
+Afanasev Anton, Bubnov Nikita, Mikhaylenko Dmitry, Kalakutsky Arkady
 
 Try it here: http://sketchturner.github.io/3dcity/
 
