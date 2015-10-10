@@ -1,10 +1,9 @@
-3dcity
+Virtual City
 ======
 
 Contributors:
 
-Afanasev Anton, Bubnov Nikita, Mikhaylenko Dmitry, Kalakutsky Arkady
+Afanasyev Anton, Bubnov Nikita, Mikhaylenko Dmitry, Kalakutsky Arkady
 
 =======
-How to install:
-download sources from repository to your web-hosting or local server, then simply open it with Chrome.
+Project build during hackathon held in SpbAU. 
